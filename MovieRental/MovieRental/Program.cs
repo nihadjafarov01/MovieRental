@@ -1,4 +1,5 @@
 using MovieRental.DAL;
+using MovieRental.Business;
 
 namespace MovieRental
 {
@@ -11,7 +12,8 @@ namespace MovieRental
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDALLayer();
+            builder.Services.AddDALServices();
+            builder.Services.AddBusinessServices();
 
             var app = builder.Build();
 
@@ -28,7 +30,12 @@ namespace MovieRental
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Movie}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",

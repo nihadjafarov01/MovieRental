@@ -9,7 +9,7 @@ namespace MovieRental.DAL
 {
     public static class ServiceRegistration
     {
-        public static IServiceCollection AddDALLayer(this IServiceCollection services)
+        public static IServiceCollection AddDALServices(this IServiceCollection services)
         {
             services.AddDbContext<MovieRentalDbContext>(opt => opt.UseSqlServer(Configuration.ConnectionString));
             services.AddIdentity<AppUser, IdentityRole>(opt =>
