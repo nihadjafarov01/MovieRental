@@ -15,6 +15,8 @@ namespace MovieRental
             builder.Services.AddDALServices();
             builder.Services.AddBusinessServices();
 
+            builder.Services.AddHttpContextAccessor();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -32,6 +34,7 @@ namespace MovieRental
 
             app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.MapControllerRoute(
                 name: "areas",

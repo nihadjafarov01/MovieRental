@@ -11,7 +11,8 @@ namespace MovieRental.DAL.Contexts
         public MovieRentalDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Movie> Movies { get; set; }
-        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<AppUser> Users { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -30,5 +31,26 @@ namespace MovieRental.DAL.Contexts
 
             return await base.SaveChangesAsync(cancellationToken);
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Review>()
+                .HasOne(r => r.Movie)
+                .WithMany(m => m.Reviews);
+
+            builder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany(m => m.Reviews);
+
+            builder.Entity<AppUser>()
+                .HasMany(u => u.Reviews)
+                .WithOne(r => r.User);
+
+            builder.Entity<Movie>()
+                .HasMany(m => m.Reviews)
+                .WithOne(r => r.Movie);
+
+            base.OnModelCreating(builder);
+        }
+
     }
 }
