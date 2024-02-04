@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MovieRental.Business.Profiles;
+using MovieRental.Business.Repositories.Implements;
+using MovieRental.Business.Repositories.Interfaces;
 using MovieRental.Business.Services.Implements;
 using MovieRental.Business.Services.Interfaces;
 using MovieRental.Core.Models;
@@ -15,10 +17,13 @@ namespace MovieRental.Business
         public static IServiceCollection AddBusinessServices(this IServiceCollection services)
         {
             services.AddScoped<IMovieRepository, MovieRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
 
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILayoutService, LayoutService>();
+            services.AddScoped<IReviewService, ReviewService>();
 
             //services.AddHttpContextAccessor();
             //services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();

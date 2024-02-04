@@ -51,7 +51,7 @@ namespace MovieRental.Business.Services.Implements
 
         public async Task<MovieListItemVM> GetByIdAsync(int id)
         {
-            var model = await _repo.GetByIdAsync(id);
+            var model = await _repo.GetByIdAsync(id, false, "Reviews");
             var vm = _mapper.Map<MovieListItemVM>(model);
             return vm;
         }

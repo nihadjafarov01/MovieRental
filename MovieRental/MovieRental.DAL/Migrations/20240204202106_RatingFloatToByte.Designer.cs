@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieRental.DAL.Contexts;
 
@@ -11,9 +12,10 @@ using MovieRental.DAL.Contexts;
 namespace MovieRental.DAL.Migrations
 {
     [DbContext(typeof(MovieRentalDbContext))]
-    partial class MovieRentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240204202106_RatingFloatToByte")]
+    partial class RatingFloatToByte
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

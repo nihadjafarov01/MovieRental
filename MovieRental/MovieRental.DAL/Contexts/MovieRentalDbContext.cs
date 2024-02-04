@@ -41,9 +41,17 @@ namespace MovieRental.DAL.Contexts
                 .HasOne(r => r.User)
                 .WithMany(m => m.Reviews);
 
+            builder.Entity<Review>()
+                .HasKey(r => new {r.MovieId, r.UserId});
+
+            builder.Entity<Review>()
+                .Property(r => r.Id)
+                .UseIdentityColumn();
+
             builder.Entity<AppUser>()
                 .HasMany(u => u.Reviews)
                 .WithOne(r => r.User);
+
 
             builder.Entity<Movie>()
                 .HasMany(m => m.Reviews)

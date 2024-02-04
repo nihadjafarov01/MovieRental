@@ -35,5 +35,27 @@ namespace MovieRental.Business.Services.Implements
             var ruser = _mapper.Map<MyProfileVM>(user);
             return ruser;
         }
+
+        public async Task<UserVM> GetUserVMAsync()
+        {
+            string username = _httpContext.HttpContext.User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(username);
+            var vm = _mapper.Map<UserVM>(user);
+            return vm;
+        }
+
+        public async Task<string> GetUserIdAsync()
+        {
+            string username = _httpContext.HttpContext.User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(username);
+            return user.Id;
+        }
+
+        public async Task<UserProfileVM> GetUserByUsernameAsync(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            UserProfileVM vm = _mapper.Map<UserProfileVM>(user);
+            return vm;
+        }
     }
 }

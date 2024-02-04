@@ -7,6 +7,9 @@ namespace MovieRental.Business.Services.Interfaces
     {
         public IEnumerable<UserVM> GetAll();
         public Task<MyProfileVM> GetMyProfileAsync();
+        public Task<UserVM> GetUserVMAsync();
+        public Task<string> GetUserIdAsync();
+        public Task<UserProfileVM> GetUserByUsernameAsync(string username);
 
     }
 }

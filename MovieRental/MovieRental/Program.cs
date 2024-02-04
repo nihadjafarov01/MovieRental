@@ -35,6 +35,14 @@ namespace MovieRental
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "userProfile",
+                    pattern: "user/profile/{username}",
+                    defaults: new { controller = "User", action = "Profile" });
+                // Other routes...
+            });
 
             app.MapControllerRoute(
                 name: "areas",

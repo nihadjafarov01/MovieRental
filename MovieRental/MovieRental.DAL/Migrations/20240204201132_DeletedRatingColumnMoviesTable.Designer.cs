@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieRental.DAL.Contexts;
 
@@ -11,9 +12,10 @@ using MovieRental.DAL.Contexts;
 namespace MovieRental.DAL.Migrations
 {
     [DbContext(typeof(MovieRentalDbContext))]
-    partial class MovieRentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240204201132_DeletedRatingColumnMoviesTable")]
+    partial class DeletedRatingColumnMoviesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,8 +271,9 @@ namespace MovieRental.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<byte>("RatingValue")
-                        .HasColumnType("tinyint");
+                    b.Property<float>("RatingValue")
+                        .HasMaxLength(10)
+                        .HasColumnType("real");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");

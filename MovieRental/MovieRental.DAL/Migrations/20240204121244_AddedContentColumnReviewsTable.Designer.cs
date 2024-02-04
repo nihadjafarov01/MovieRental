@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieRental.DAL.Contexts;
 
@@ -11,9 +12,10 @@ using MovieRental.DAL.Contexts;
 namespace MovieRental.DAL.Migrations
 {
     [DbContext(typeof(MovieRentalDbContext))]
-    partial class MovieRentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240204121244_AddedContentColumnReviewsTable")]
+    partial class AddedContentColumnReviewsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,6 +243,9 @@ namespace MovieRental.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float>("LocalRating")
+                        .HasColumnType("real");
+
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");
 
@@ -251,34 +256,32 @@ namespace MovieRental.DAL.Migrations
 
             modelBuilder.Entity("MovieRental.Core.Models.Review", b =>
                 {
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<byte>("RatingValue")
-                        .HasColumnType("tinyint");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("MovieId", "UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
 
                     b.HasIndex("UserId");
 

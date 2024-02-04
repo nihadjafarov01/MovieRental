@@ -1,9 +1,9 @@
 ﻿@using MovieRental.Business.ViewModels.MovieVMs;
-@model MovieListItemVM
+@model MovieDetailVM
 
 <script>
     // Fetch data from the OMDB API
-    let apiUrl = 'https://www.omdbapi.com/?apikey=137fe9c1&i=@Model.ImdbId&plot=full';
+    let apiUrl = 'https://www.omdbapi.com/?apikey=137fe9c1&i=@Model.MovieVM.ImdbId&plot=full';
 
     fetch(apiUrl)
         .then(response => response.json())
@@ -33,7 +33,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="pt-0">
-                    <iframe src="https://vidsrc.to/embed/movie/@Model.ImdbId" id="my-video" class="video-js vjs-big-play-centered w-100">
+                    <iframe src="https://vidsrc.to/embed/movie/@Model.MovieVM.ImdbId" id="my-video" class="video-js vjs-big-play-centered w-100">
                     </iframe>
                         </div>
                     </div>
@@ -57,12 +57,16 @@
                                         <div class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
                                             <ul class="ratting-start p-0 m-0 list-inline text-warning d-flex align-items-center justify-content-left">
                                                 <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star-half" aria-hidden="true"></i></li>
+                                                <span class="text-white ms-2">@Model.MovieVM.LocalRating</span>
                                             </ul>
-                                            <span id="movie-imdbRating" class="text-white ms-2">4.8 (imdb)</span>
+@*                                              <span id="movie-imdbRating" class="text-white ms-2">4.8 (imdb)</span>
+                                    *@                                    <a href="https://www.imdb.com/title/@Model.MovieVM.ImdbId" class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
+                                        <div style="width:20px;height:20px;">
+                                            <img height="20" width="20" src="~/assets/images/imdbLogo.png">
+                                        </div>
+                                        <span id="movie-imdbRating" class="text-white ms-2">4.8 (imdb)</span>
+                                    </a>
+                                </div>
                                         </div>
                                     </div>
                                     <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-tag">
@@ -159,70 +163,80 @@
                                 </div>
                                 <div id="review-01" class="tab-pane animated fadeInUp" role="tabpanel">
                                     <div class="streamit-reviews">
-                                        <div id="comments" class="comments-area validate-form">
-                                            <p class="masvideos-noreviews mt-3">
-                                                There are no reviews yet.
-                                            </p>
-                                        </div>
+                                @foreach(var item in Model.ReviewsVM)
+                                {
+                                    <div id="comments" class="comments-area validate-form form-control">
+                                        <div class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
+                                            <ul class="ratting-start p-0 m-0 list-inline text-warning d-flex align-items-center justify-content-left">
+                                                <li>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    </li>
+                                                    </ul>
+                                                        <span id="movie-imdbRating" class="text-white ms-2">@item.RatingValue/10</span>
+                                                    </div>
+                                        <p class="fw-500 my-2">
+                                            @item.Title
+                                        </p>
+                                        <div class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
+                                            <a asp-action="Profile" asp-controller="User" asp-route-username="@item.User.UserName" class="user-name">
+                                                @item.User.UserName
+                                            </a>
+                                            <br />
+                                            <span class="created-time">@item.CreatedTime</span>
+                                            </div>
+                                        <p class="my-2">@item.Description</p>
+                                            </div>
+                                }
+                                <style>
+
+
+                                    .created-time {
+                                        margin-left: 35px; /* Adjust the value as needed */
+                                    }
+                                </style>
                                         <div class="review_form">
                                             <div class="comment-respond">
-                                                <h3 class="fw-500 my-2">
-                                                    Be the first to review “Zombie Island”
-                                                </h3>
-                                                <div class="row">
+
+                                                <form method="post" class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="mb-2">
-                                          Your review
+                                          Title
                                           <span class="required">
                                           *
                                           </span>
                                       </label>
-                                                            <textarea class="form-control" name="comment" cols="5" rows="8" required=""></textarea>
+                                                    <input asp-for="MovieReviewCreateVM.Title" class="form-control"></input>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="mb-2">
-                                          Name
-                                          <span class="required">
-                                          *
-                                          </span>
-                                      </label>
-                                                            <input class="form-control" name="author" type="text" value="" size="30" required="" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="mb-2">
-                                          Email&nbsp;
-                                          <span class="required">
-                                          *
-                                          </span>
-                                      </label>
-                                                            <input class="form-control" name="email" type="email" value="" size="30" required="" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="mt-3 mt-3 d-flex gap-2 align-items-center">
-                                                            <input class="form-check-input mt-0" type="checkbox" value="" id="check1" checked />
-                                                            <label class="form-check-label" for="check1">
-                                          Save my name, email, and website in this browser for the
-                                          next time I comment.
-                                      </label>
-                                                        </div>
-                                                    </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="mb-2">
+                                                        Description
+                                                        <span class="required">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <input asp-for="MovieReviewCreateVM.Description" class="form-control"></input>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Rating (between 1 and 10):</label>
+                                                    <input asp-for="MovieReviewCreateVM.RatingValue" min="1" max="10"></input>
+                                                </div>
+                                            </div>
                                                     <div class="col-md-12">
                                                         <div class="form-submit mt-4">
                                                             <div class="iq-button">
-                                                                <button name="submit" type="submit" id="submit" class="btn text-uppercase position-relative" value="Submit">
+                                                        <button asp-route-movieId="@Model.MovieVM.Id" asp-action="CreateMovieReview" type="submit" class="btn text-uppercase position-relative">
                                               <span class="button-text">Submit</span>
                                               <i class="fa-solid fa-play"></i>
                                           </button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
