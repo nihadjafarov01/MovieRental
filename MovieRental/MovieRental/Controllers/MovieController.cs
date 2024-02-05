@@ -19,7 +19,7 @@ namespace MovieRental.Controllers
             _reviewService = reviewService;
         }
 
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Watch(int id)
         {
             if(id == 0 || id == null)
             {
@@ -52,7 +52,7 @@ namespace MovieRental.Controllers
         {
             vm.MovieReviewCreateVM.MovieId = movieId;
             await _reviewService.CreateReviewAsync(vm.MovieReviewCreateVM);
-            return RedirectToAction("Index", new { id = movieId });
+            return RedirectToAction("Watch", new { id = movieId });
         }
     }
 }

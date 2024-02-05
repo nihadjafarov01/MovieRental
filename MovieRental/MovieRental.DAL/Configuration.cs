@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Protocols;
 
 namespace MovieRental.DAL
 {

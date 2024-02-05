@@ -11,7 +11,7 @@ namespace MovieRental.DAL
     {
         public static IServiceCollection AddDALServices(this IServiceCollection services)
         {
-            services.AddDbContext<MovieRentalDbContext>(opt => opt.UseSqlServer(Configuration.ConnectionString));
+            services.AddDbContext<MovieRentalDbContext>(opt => opt.UseNpgsql(Configuration.ConnectionString));
             services.AddIdentity<AppUser, IdentityRole>(opt =>
             {
                 opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.";

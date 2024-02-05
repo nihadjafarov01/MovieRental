@@ -1,0 +1,218 @@
+﻿@using MovieRental.Business.ViewModels.TagVMs
+@model IEnumerable<TagListItemVM>
+        <!--bread-crumb-->
+<div class="iq-breadcrumb" style="background-image: url('@Url.Content("~/assets/images/pages/01.webp")');">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-sm-12">
+                        <nav aria-label="breadcrumb" class="text-center">
+                            <h2 class="title">Tags</h2>
+                            <ol class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
+                                <li class="breadcrumb-item active">Tags</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--bread-crumb-->
+
+        <section class="section-padding">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h4 class="main-title text-capitalize mb-0">Movie Tag</h4>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6">
+            @foreach(var item in Model)
+            {
+                <div class="col">
+                        <a asp-action="Posts" asp-route-tagTitle="@item.Title" class="iq-tag-box">
+                        <span class="iq-tag">
+                            #@item.Title
+                        </span>
+                    </a>
+                    </div>
+            }
+                </div>
+                <div class="text-center">
+                    <div class="iq-button">
+                        <a href="javascript:void(0)" class="btn text-uppercase position-relative">
+                        <span class="button-text">load more</span>
+                        <i class="fa-solid fa-play"></i>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding-bottom">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h4 class="main-title text-capitalize mb-0">Tv-Show Tag</h4>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6">
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            4K Ultra
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Brother
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Brother Relationship
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Kings
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            music
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Mythology
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Premieres
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Vikings
+                        </span>
+                    </a>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="iq-button">
+                        <a href="javascript:void(0)" class="btn text-uppercase position-relative">
+                        <span class="button-text">load more</span>
+                        <i class="fa-solid fa-play"></i>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="section-padding-bottom">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h4 class="main-title text-capitalize mb-0">Video Tag</h4>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6">
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Action
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Adventure
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Animation
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Comedy
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Crime
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Drama
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Family
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Fantasy
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            horror
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Romance
+                        </span>
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a href="view-all-movie.html" class="iq-tag-box">
+                        <span class="iq-tag">
+                            Thriller
+                        </span>
+                    </a>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="iq-button">
+                        <a href="javascript:void(0)" class="btn text-uppercase position-relative">
+                        <span class="button-text">load more</span>
+                        <i class="fa-solid fa-play"></i>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>

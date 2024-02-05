@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MovieRental.Business.Profiles;
 using MovieRental.Business.Repositories.Implements;
 using MovieRental.Business.Repositories.Interfaces;
 using MovieRental.Business.Services.Implements;
 using MovieRental.Business.Services.Interfaces;
-using MovieRental.Core.Models;
-using MovieRental.DAL.Contexts;
 
 namespace MovieRental.Business
 {
@@ -18,12 +13,16 @@ namespace MovieRental.Business
         {
             services.AddScoped<IMovieRepository, MovieRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
 
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILayoutService, LayoutService>();
             services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<IPostService, PostService>();
 
             //services.AddHttpContextAccessor();
             //services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();

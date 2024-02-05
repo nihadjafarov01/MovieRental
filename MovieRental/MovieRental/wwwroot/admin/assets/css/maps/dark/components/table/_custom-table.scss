@@ -1,0 +1,97 @@
+table {
+    &.custom-table {
+        thead {
+            vertical-align: middle;
+
+            th {
+                border: none;
+                padding: 1.5em 1.25em;
+                text-transform: capitalize;
+                color: $headings-color;
+                background: rgba(8, 7, 7, .90);
+            }
+        }
+
+        tbody {
+            td {
+                border: none;
+                padding: 1.5em 1.25em;
+                text-transform: capitalize;
+                color: $body-color;
+                background: $card-bg;
+                border-bottom: 0.625em solid $body-bg;
+            }
+        }
+    }
+
+    &.table-border {
+        thead {
+            tr {
+                background: $card-bg;
+
+                th {
+                    background: transparent;
+                    padding: 1rem;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    padding: 1rem;
+                }
+            }
+        }
+
+        tfoot {
+            tr {
+                td {
+                    padding: 1rem;
+                    border-top: 1px solid rgba(var(--bs-black-rgb), .1);
+                }
+            }
+        }
+    }
+}
+
+.card {
+    table {
+        &.custom-table {
+            thead {
+    
+                th {
+                    color: $headings-color;
+                    background: rgba(8, 7, 7, .90);
+                }
+            }
+    
+            tbody {
+                td {
+                    color: $body-color;
+                    background: $body-bg;
+                    border-bottom: 0.625em solid $card-bg;
+                }
+            }
+        }
+    
+        &.table-border {
+            thead {
+                tr {
+                    background: $body-bg;
+    
+                    th {
+                        background: transparent;
+                    }
+                }
+            }
+            tfoot {
+                tr {
+                    td {
+                        border-top: 1px solid rgba(var(--bs-black-rgb), .1);
+                    }
+                }
+            }
+        }
+    }
+}

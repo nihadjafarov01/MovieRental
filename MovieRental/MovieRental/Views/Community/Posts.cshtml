@@ -1,0 +1,64 @@
+﻿@using MovieRental.Business.ViewModels.PostVMs
+@model IEnumerable<PostListItemVM>
+
+<div class="iq-breadcrumb" style="background-image: url('@Url.Content("~/assets/images/pages/01.webp")');">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-sm-12">
+                        <nav aria-label="breadcrumb" class="text-center">
+                            <h2 class="title">FAQ</h2>
+                            <ol class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
+                                <li class="breadcrumb-item active">FAQ</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--bread-crumb-->
+
+
+        <div class="section-padding">
+            <div class="container">
+                <div class="iq-accordian iq-accordian-square">
+            @foreach(var item in Model)
+            {
+                <div id="comments" class="comments-area validate-form form-control">
+                    <div class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
+                        <ul class="ratting-start p-0 m-0 list-inline text-warning d-flex align-items-center justify-content-left">
+                            <li>
+                                <p class="my-2">#@item.Tag.Title</p>
+                            </li>
+                        </ul>
+                        <span class="text-white ms-2">@item.CreatedTime</span>
+                    </div>
+                    <p class="fw-500 my-2">
+                        @item.Title
+                    </p>
+                    <p class="my-2">@item.Description</p>
+                    <div class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
+                        <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <div style="width: 35px; height: 35px; overflow: hidden; border-radius: 50%;">
+                                @if (item.User.ProfileImageUrl == null)
+                                {
+                                    <img src="~/assets/images/blankProfilePhoto.png" class="icon-18" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                                }
+                                else
+                                {
+                                    <img src="@item.User.ProfileImageUrl" class="icon-18" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                                }
+                            </div>
+                        </a>
+                        <br>
+                        <span>@item.User.UserName</span>
+                    </div>
+                </div>
+            }
+
+                </div>
+            </div>
+        </div>
+
+</main>

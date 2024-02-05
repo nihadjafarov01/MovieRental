@@ -35,6 +35,10 @@ namespace MovieRental
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Movie}/{action=Index}/{id?}");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -43,10 +47,14 @@ namespace MovieRental
                     defaults: new { controller = "User", action = "Profile" });
                 // Other routes...
             });
-
-            app.MapControllerRoute(
-                name: "areas",
-                pattern: "{area:exists}/{controller=Movie}/{action=Index}/{id?}");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "posts",
+                    pattern: "community/posts/{tagTitle}",
+                    defaults: new { controller = "Community", action = "Posts" });
+                // Other routes...
+            });
 
             app.MapControllerRoute(
                 name: "default",

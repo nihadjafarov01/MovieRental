@@ -10,5 +10,7 @@ namespace MovieRental.Core.Models
         public DateTime BirthDate { get; set; }
         public bool IsVerified { get; set; }
         public List<Review> Reviews { get; set; }
+        public List<Post> Posts { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }
