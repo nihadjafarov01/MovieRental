@@ -29,9 +29,20 @@ namespace MovieRental.Business.Services.Implements
 
         public IEnumerable<PostListItemVM> GetAll()
         {
-            var data = _repository.GetAll(false, "Tag", "Movie", "User");
+            var data = _repository.GetAll(false, "Tag", "Movie", "User", "Comments");
             var rdata = _mapper.Map<IEnumerable<PostListItemVM>>(data);
             return rdata;
+        }
+
+        public async Task<PostVM> GetVmByIdAsync(int postId)
+        {
+            var model = await _repository.GetByIdAsync(postId, false, "Tag", "Movie", "User", "Comments");
+            var vm = _mapper.Map<PostListItemVM>(model);
+            PostVM rvm = new PostVM
+            {
+                PostListItemVM = vm,
+            };
+            return rvm;
         }
     }
 }

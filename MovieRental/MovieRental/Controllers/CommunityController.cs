@@ -22,7 +22,7 @@ namespace MovieRental.Controllers
         }
         public IActionResult Posts([FromRoute] string tagTitle)
         {
-            var data = _postService.GetAll();
+            var data = _postService.GetAll().Where(p => p.Tag.Title.ToLower() == tagTitle.ToLower());
             return View(data);
         }
         public IActionResult Create()
@@ -38,6 +38,11 @@ namespace MovieRental.Controllers
             }
             await _postService.CreateAsync(vm);
             return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Post(int postId)
+        {
+            var vm = await _postService.GetVmByIdAsync(postId);
+            return View(vm);
         }
     }
 }

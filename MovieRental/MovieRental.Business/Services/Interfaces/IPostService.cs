@@ -6,5 +6,6 @@ namespace MovieRental.Business.Services.Interfaces
     {
         public IEnumerable<PostListItemVM> GetAll();
         public Task CreateAsync(PostCreateVM vm);
+        public Task<PostVM> GetVmByIdAsync(int postId);
     }
 }

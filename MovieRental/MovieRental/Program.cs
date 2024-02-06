@@ -39,22 +39,21 @@ namespace MovieRental
                 name: "areas",
                 pattern: "{area:exists}/{controller=Movie}/{action=Index}/{id?}");
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "userProfile",
-                    pattern: "user/profile/{username}",
-                    defaults: new { controller = "User", action = "Profile" });
-                // Other routes...
-            });
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "posts",
-                    pattern: "community/posts/{tagTitle}",
-                    defaults: new { controller = "Community", action = "Posts" });
-                // Other routes...
-            });
+            app.MapControllerRoute(
+                name: "userProfile",
+                pattern: "user/profile/{username}",
+                defaults: new { controller = "User", action = "Profile" });
+
+            app.MapControllerRoute(
+                name: "post",
+                pattern: "community/post/{postId}",
+                defaults: new { controller = "Community", action = "Post" });
+
+            app.MapControllerRoute(
+                name: "posts",
+                pattern: "community/{tagTitle}/posts",
+                defaults: new { controller = "Community", action = "Posts" });
+
 
             app.MapControllerRoute(
                 name: "default",

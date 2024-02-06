@@ -1,8 +1,8 @@
-﻿using MovieRental.Core.Models.Common;
+﻿using MovieRental.Core.Models;
 
-namespace MovieRental.Core.Models
+namespace MovieRental.Business.ViewModels.CommentVMs
 {
-    public class Comment : BaseModel
+    public class CommentUpdateVM
     {
         public string Content { get; set; }
         public int PostId { get; set; }
@@ -11,6 +11,5 @@ namespace MovieRental.Core.Models
         public AppUser User { get; set; }
         public int? ParentCommentId { get; set; }
         public Comment ParentComment { get; set; }
-        public IEnumerable<Comment> ChildComments { get; set; }
     }
 }

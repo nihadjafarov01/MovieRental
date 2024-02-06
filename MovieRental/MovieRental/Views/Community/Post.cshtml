@@ -1,0 +1,284 @@
+﻿@using MovieRental.Business.ViewModels.PostVMs
+@model PostVM
+
+<div class="section-padding">
+    <div class="container">
+        <div class="iq-accordian iq-accordian-square">
+                <div id="comments" class="comments-area validate-form form-control">
+                    <div class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
+                        <ul class="ratting-start p-0 m-0 list-inline text-warning d-flex align-items-center justify-content-left">
+                            <li>
+                                <p class="my-2">#@Model.PostListItemVM.Tag.Title</p>
+                            </li>
+                        </ul>
+                    <span class="text-white ms-2">@Model.PostListItemVM.CreatedTime</span>
+                    </div>
+                <p class="fw-500 my-2">
+                    @Model.PostListItemVM.Title
+                    </p>
+                <p class="my-2">@Model.PostListItemVM.Description</p>
+                    <div class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
+                        <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <div style="width: 35px; height: 35px; overflow: hidden; border-radius: 50%;">
+                            @if (Model.PostListItemVM.User.ProfileImageUrl == null)
+                                {
+                                    <img src="~/assets/images/blankProfilePhoto.png" class="icon-18" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                                }
+                                else
+                                {
+                                <img src="@Model.PostListItemVM.User.ProfileImageUrl" class="icon-18" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                                }
+                            </div>
+                        </a>
+                        <br>
+                    <a asp-action="Profile" asp-controller="User" asp-route-username="@Model.PostListItemVM.User.UserName">@Model.PostListItemVM.User.UserName</a>
+                    </div>
+                </div>
+
+        </div>
+        <div id="content-comments" class="comments-wrap p-0" style="margin-bottom: 30px; margin-top: 20px;">
+            <div class="sc-header" style="margin-bottom: 20px;">
+            <div class="sc-h-title">
+                <div class="sc-h-title">
+                    <i class="far fa-comment-alt mr-2">
+                        @Model.PostListItemVM.Comments.Count()
+                    </i>
+                    <span> 
+                        Comments
+                    </span>
+                </div>
+            </div>
+            <div class="sc-h-sort">
+                </div>
+        </div>
+            <form asp-action="Create" asp-controller="Comment" id="commentForm" method="post" class="comment-input">
+                <div class="slider-ratting d-flex">
+                    <div class="user-avatar">
+                    @if (Model.PostListItemVM.User.ProfileImageUrl != null)
+                    {
+                            <img src="@Model.PostListItemVM.User.ProfileImageUrl" class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                    }
+                    else
+                    {
+                            <img src="~/assets/images/blankProfilePhoto.png" class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                    }
+                    </div>
+                    <div class="ci-form ms-2" style="width: -webkit-fill-available;">
+                        <div class="user-name">
+                            Comment as <a asp-action="Profile" asp-controller="User" asp-route-username="@User.Identity.Name" class="link-highlight ml-1">@User.Identity.Name</a>
+                        </div>
+                            <input asp-for="@Model.CommentCreateVM.Content" class="form-control" id="commentInput">
+                        <div class="ci-buttons" id="commentButtons" style="display: none;">
+                            <div class="btn btn-sm btn-secondary small-btn" id="cancelButton">Cancel</div>
+                            <button id="submitButton" type="submit" asp-route-postId="@Model.PostListItemVM.Id" asp-action="Create" asp-controller="Comment" class="btn btn-sm btn-primary ml-2 small-btn">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <style>
+                .small-btn {
+                    font-size: 12px; /* Adjust the font size to your preference */
+                    padding: 5px 10px; /* Adjust the padding to your preference */
+                    margin: 5px; /* Adjust the right margin to your preference */
+                }
+            </style>
+
+            <!-- ... (your existing HTML code) ... -->
+            <!-- ... (your existing HTML code) ... -->
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    initializeCommentForm();
+
+                    document.addEventListener('click', function (event) {
+                        if (event.target.id === 'submitButton') {
+                            handleCommentSubmit(event);
+                        } else if (event.target.id === 'cancelButton') {
+                            resetCommentInput();
+                        }
+                    });
+
+                    document.addEventListener('focusin', function (event) {
+                        if (event.target.id === 'commentInput') {
+                            document.getElementById('commentButtons').style.display = 'flex';
+                        }
+                    });
+                });
+
+                function initializeCommentForm() {
+                    var timeAgoElements = document.querySelectorAll('.time-ago');
+                    timeAgoElements.forEach(function (element) {
+                        element.textContent = timeAgo(element.getAttribute('data-timestamp'));
+                    });
+                }
+
+                function handleCommentSubmit(event) {
+                    event.preventDefault();
+
+                    var commentForm = document.getElementById('commentForm');
+                    var actionUrl = commentForm.action + '?postId=' + '@Model.PostListItemVM.Id';
+
+                    fetch(actionUrl, {
+                        method: commentForm.method,
+                        body: new URLSearchParams(new FormData(commentForm))
+                    })
+                        .then(response => response.text())
+                        .then(html => {
+                            document.body.innerHTML = html;
+
+                            resetCommentInput();
+                            initializeCommentForm();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+
+                function resetCommentInput() {
+                    var commentInput = document.getElementById('commentInput');
+                    commentInput.value = '';
+                    document.getElementById('commentButtons').style.display = 'none';
+                }
+
+                function timeAgo(dateString) {
+                    const date = new Date(dateString);
+                    const seconds = Math.floor((new Date() - date) / 1000);
+
+                    // Rest of the timeAgo function remains unchanged...
+                }
+            </script>
+
+
+
+</div>
+
+        <div class="cw_list">
+            @if (Model.PostListItemVM.Comments.Any())
+            {
+                foreach(var item in Model.PostListItemVM.Comments)
+                {
+            <div class="comments-wrap p-0" style="margin-bottom: 40px; margin-top: 20px;">
+                <div class="comment-input">
+                    <div class="slider-ratting d-flex">
+                        <div class="user-avatar">
+                    @if (item.User.ProfileImageUrl != null)
+                    {
+                                <img src="@item.User.ProfileImageUrl" class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                    }
+                    else
+                    {
+                                <img src="~/assets/images/blankProfilePhoto.png" class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                    }
+                        </div>
+                        <div class="ci-form ms-2" style="width: -webkit-fill-available;">
+                            <div class="ihead d-flex align-items-center">
+                            <div class="user-name">
+                                    <a asp-action="Profile" asp-controller="User" asp-route-username="@item.User.UserName" class="link-highlight ml-1">@item.User.UserName</a>
+                            </div>
+                                        <div class="ms-4 time-ago" data-timestamp="@item.CreatedTime.AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss")">@item.CreatedTime.AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss")</div>
+                                    </div>
+                            <div class="ibody">
+                                <p>@item.Content</p>
+                            </div>
+                            <div class="ibottom d-flex align-items-center">
+                                    <div class="ms-4">
+                                        <a class="reply-class">
+                                            <i class="fas fa-reply mr-1">
+
+                                            </i>Reply
+                                        </a>
+                                    </div>
+                                <div class="ms-4">
+                                        <a>
+                                            <i class="far fa-thumbs-up mr-1"></i><span class="value"></span>
+                                        </a>
+                                    </div>
+                                <div class="ms-4">
+                                        <a>
+                                            <i class="far fa-thumbs-down mr-1"></i><span class="value"></span>
+                                        </a>
+                                    </div>
+                                <div class="ms-4">
+                                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h mr-1"></i>More</a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var timeAgoElements = document.getElementById('time-@item.Id');
+
+                            var dateString = timeAgoElements.textContent;
+                            dateString = timeAgo(dateString);
+                            timeAgoElements.textContent = dateString;
+                        });
+
+
+                        function timeAgo(dateString) {
+                            const date = new Date(dateString);
+                            const seconds = Math.floor((new Date() - date) / 1000);
+
+                            const interval = Math.floor(seconds / 31536000);
+
+                            if (interval > 1) {
+                                return interval + " years ago";
+                            }
+                            if (interval === 1) {
+                                return interval + " year ago";
+                            }
+
+                            const months = Math.floor(seconds / 2628000);
+                            if (months > 1) {
+                                return months + " months ago";
+                            }
+                            if (months === 1) {
+                                return months + " month ago";
+                            }
+
+                            const days = Math.floor(seconds / 86400);
+                            if (days > 1) {
+                                return days + " days ago";
+                            }
+                            if (days === 1) {
+                                return days + " day ago";
+                            }
+
+                            const hours = Math.floor(seconds / 3600);
+                            if (hours > 1) {
+                                return hours + " hours ago";
+                            }
+                            if (hours === 1) {
+                                return hours + " hour ago";
+                            }
+
+                            const minutes = Math.floor(seconds / 60);
+                            if (minutes > 1) {
+                                return minutes + " minutes ago";
+                            }
+                            if (minutes === 1) {
+                                return minutes + " minute ago";
+                            }
+
+                            return "just now";
+                        }
+                    </script>
+
+                }
+
+            }
+            else
+            {
+                <p>no comments</p>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
