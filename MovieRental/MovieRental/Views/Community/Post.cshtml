@@ -68,7 +68,9 @@
                         <div class="user-name">
                             Comment as <a asp-action="Profile" asp-controller="User" asp-route-username="@User.Identity.Name" class="link-highlight ml-1">@User.Identity.Name</a>
                         </div>
-                            <input asp-for="@Model.CommentCreateVM.Content" class="form-control" id="commentInput">
+
+                        <input asp-for="@Model.CommentCreateVM.Content" class="form-control" id="commentInput">
+
                         <div class="ci-buttons" id="commentButtons" style="display: none;">
                             <div class="btn btn-sm btn-secondary small-btn" id="cancelButton">Cancel</div>
                             <button id="submitButton" type="submit" asp-route-postId="@Model.PostListItemVM.Id" asp-action="Create" asp-controller="Comment" class="btn btn-sm btn-primary ml-2 small-btn">Submit</button>
@@ -76,6 +78,7 @@
                     </div>
                 </div>
             </form>
+                        <span asp-validation-for="@Model.CommentCreateVM.Content" class="text-danger"></span>
 
             <style>
                 .small-btn {
@@ -157,7 +160,7 @@
         <div class="cw_list">
             @if (Model.PostListItemVM.Comments.Any())
             {
-                foreach(var item in Model.PostListItemVM.Comments)
+                foreach(var item in Model.PostListItemVM.Comments.Reverse())
                 {
             <div class="comments-wrap p-0" style="margin-bottom: 40px; margin-top: 20px;">
                 <div class="comment-input">
@@ -278,7 +281,5 @@
         </div>
     </div>
 </div>
-
-
 
 

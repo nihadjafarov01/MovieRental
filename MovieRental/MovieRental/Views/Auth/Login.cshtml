@@ -90,6 +90,7 @@
                                 </div>
                             </div>
                             <form method="post">
+                                <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
                                 <div class="mb-3">
                                     <label class="text-white fw-500 mb-2">Username or Email Address</label>
                                     <input asp-for="UsernameOrEmail" type="text" class="form-control rounded-0" required="">

@@ -44,5 +44,9 @@ namespace MovieRental.Controllers
             var vm = await _postService.GetVmByIdAsync(postId);
             return View(vm);
         }
+        public IActionResult Chat()
+        {
+            return View();
+        }
     }
 }

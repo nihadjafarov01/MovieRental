@@ -1,5 +1,6 @@
 using MovieRental.DAL;
 using MovieRental.Business;
+using MovieRental.Business.Hubs;
 
 namespace MovieRental
 {
@@ -17,6 +18,8 @@ namespace MovieRental
 
             builder.Services.AddHttpContextAccessor();
 
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -27,6 +30,7 @@ namespace MovieRental
                 app.UseHsts();
             }
 
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -34,6 +38,8 @@ namespace MovieRental
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapHub<ChatHub>("/chatHub");
 
             app.MapControllerRoute(
                 name: "areas",

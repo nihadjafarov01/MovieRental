@@ -1,0 +1,236 @@
+﻿<style>
+    /* Add your existing styles here */
+    #toggleChatButton {
+        border-radius: 5px;
+        margin-top: 70px;
+        cursor: pointer;
+        width:200px;
+    }
+
+    #chatContainer {
+        height: 0; /* Set initial height to 0 */
+        overflow: hidden;
+        transition: height 0.3s ease-in-out; /* Add transition for smooth animation */
+        background-color: #2d2e3e;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 70px;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #chatBody::-webkit-scrollbar {
+        width: 12px; /* Width of the invisible scrollbar */
+    }
+
+    #chatBody::-webkit-scrollbar-thumb {
+        background-color: transparent; /* Make the thumb transparent */
+    }
+
+    #chatBody::-webkit-scrollbar-thumb {
+        background-color: transparent; /* Make the thumb transparent */
+    }
+
+    #chatBody {
+        overflow-y: auto;
+        flex: 1;
+        padding: 30px;
+        margin-right:0;
+        scroll-behavior: smooth;
+    }
+
+    #messagesList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .message {
+        background-color: #2d2e3e;
+        padding: 10px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #messageInput {
+        width: calc(100% - 20px); /* Adjust the width to leave space for the Send button */
+        margin-right: 10px;
+    }
+
+    /* Add your other styles here */
+</style>
+
+<div class="container">
+    <div class="iq-button" style="display: flex; justify-content: center;">
+        <button class="btn" id="toggleChatButton">Toggle Chat</button>
+    </div>
+    <div id="chatContainer" class="form-control">
+        <div id="chatBody">
+    <ul id="messagesList">
+
+<div class="comments-wrap p-0" style="margin-bottom: 40px; margin-top: 20px;">
+    <div class="comment-input">
+        <div class="form-control" style="width: max-content;">
+                <div class="slider-ratting d-flex">
+            <div class="user-avatar">
+                <img src="https://cdn.britannica.com/27/217827-050-60BEF3D1/American-actor-Jake-Gyllenhaal-2019.jpg" class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image">
+            </div>
+            <div class="ci-form ms-2" style="width: -webkit-fill-available;">
+                <div class="ihead d-flex align-items-center">
+                    <div class="user-name">
+                        <a class="link-highlight ml-1" href="/user/profile/nihad123">nihad123</a>
+                    </div>
+                    <div class="ms-4 time-ago" data-timestamp="2024-02-07T12:32:54">7 hours ago</div>
+                </div>
+                <div class="ibody">
+                    <p>test comment</p>
+                </div>
+                <div class="ibottom d-flex align-items-center">
+                    <div class="ms-4">
+                        <a class="reply-class">
+                            <i class="fas fa-reply mr-1">
+
+                            </i>Reply
+                        </a>
+                    </div>
+                    <div class="ms-4">
+                        <a>
+                            <i class="far fa-thumbs-up mr-1"></i><span class="value"></span>
+                        </a>
+                    </div>
+                    <div class="ms-4">
+                        <a>
+                            <i class="far fa-thumbs-down mr-1"></i><span class="value"></span>
+                        </a>
+                    </div>
+                    <div class="ms-4">
+                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h mr-1"></i>More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+                </div>
+            </div>
+    </div>
+    </ul>
+    </div>
+        <div class="message d-flex align-items-center" style="display: flex;justify-content: space-between;">
+            <div class="" style="width: -webkit-fill-available;">
+            <div class="col-5" style="width: -webkit-fill-available;">
+                    <input placeholder="Send a message..." type="text" class="w-100 form-control" id="messageInput" />
+            </div>
+    </div>
+    <div class="ms-2">
+            <div class="col-6 text-end" style="width: -webkit-fill-available;">
+                    <div class="iq-button">
+                    <button class="btn" onclick="scrollWin()" type="button" id="sendButton" value="Send Message">Send
+
+                    </button>
+                    </div>
+            </div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+<script src="~/microsoft-signalr/signalr.min.js"></script>
+<script>
+    var chatContainer = document.getElementById("chatContainer");
+    var toggleChatButton = document.getElementById("toggleChatButton");
+
+    toggleChatButton.addEventListener("click", function () {
+        if (chatContainer.style.height === "0px" || chatContainer.style.height === "") {
+            chatContainer.style.height = "700px"; /* Set the desired height */
+            toggleChatButton.textContent = "Hide Chat";
+        } else {
+            chatContainer.style.height = "0";
+            toggleChatButton.textContent = "Show Chat";
+        }
+    });
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    var myUsername = `@User.Identity.Name`;
+    console.log(myUsername);
+
+    //Disable the send button until connection is established.
+    document.getElementById("sendButton").disabled = true;
+
+    connection.on("ReceiveMessage", function (user, profileImageUrl, message) {
+        // var li = document.createElement("li");
+        // var img = document.createElement("img");
+        // document.getElementById("messagesList").appendChild(li);
+        // document.getElementById("messagesList").appendChild(img);
+        var messagesList = document.getElementById("messagesList");
+        messagesList.innerHTML += `
+            <div class="comments-wrap p-0" style="margin-bottom: 40px; margin-top: 20px;">
+            <div class="comment-input" ${user == myUsername ? 'style="display: flex; justify-content: flex-end;"' : ''}>
+            <div class="form-control" style="width: max-content;">
+
+            <div class="slider-ratting d-flex">
+                <div class="user-avatar">
+                    <img src=${ profileImageUrl}  class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image">
+                </div>
+                <div class="ci-form ms-2" style="width: -webkit-fill-available;">
+                    <div class="ihead d-flex align-items-center">
+                        <div class="user-name">
+                                <a class="link-highlight ml-1" href="/user/profile/${ user }">${ user }</a>
+                        </div>
+                        <div class="ms-4 time-ago" data-timestamp="2024-02-07T12:32:54">7 hours ago</div>
+                    </div>
+                    <div class="ibody">
+                        <p>${message}</p>
+                    </div>
+                    <div class="ibottom d-flex align-items-center">
+                        <div class="ms-4">
+                            <a class="reply-class">
+                                <i class="fas fa-reply mr-1">
+
+                                </i>Reply
+                            </a>
+                        </div>
+                        <div class="ms-4">
+                            <a>
+                                <i class="far fa-thumbs-up mr-1"></i><span class="value"></span>
+                            </a>
+                        </div>
+                        <div class="ms-4">
+                            <a>
+                                <i class="far fa-thumbs-down mr-1"></i><span class="value"></span>
+                            </a>
+                        </div>
+                        <div class="ms-4">
+                            <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h mr-1"></i>More</a>
+                        </div>
+                    </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        </div>
+        `;
+        document.getElementById("chatBody").scrollBy(0, 1000);
+        document.getElementById("messageInput").value = '';
+        // We can assign user-supplied strings to an element's textContent because it
+
+    });
+
+    connection.start().then(function () {
+        document.getElementById("sendButton").disabled = false;
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+        var message = document.getElementById("messageInput").value;
+        connection.invoke("SendMessage", message).catch(function (err) {
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    });
+</script>

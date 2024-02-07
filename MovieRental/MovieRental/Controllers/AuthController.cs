@@ -35,6 +35,7 @@ namespace MovieRental.Controllers
             }
             return View(vm);
         }
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
