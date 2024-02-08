@@ -16,6 +16,8 @@ namespace MovieRental.DAL.Contexts
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<WatchList> WatchLists { get; set; }
+        public DbSet<WatchListType> WatchListTypes { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -58,6 +60,9 @@ namespace MovieRental.DAL.Contexts
 
                 u.HasMany(u => u.Comments)
                     .WithOne(c => c.User);
+
+                u.HasMany(u => u.WatchLists)
+                    .WithOne(c => c.User);  
             });
 
             builder.Entity<Movie>(m =>
@@ -67,6 +72,9 @@ namespace MovieRental.DAL.Contexts
 
                 m.HasMany(m => m.Posts)
                     .WithOne(p => p.Movie);
+
+                m.HasMany(m => m.WatchLists)
+                    .WithOne(c => c.Movie);
             });
 
             builder.Entity<Tag>(t =>
@@ -104,6 +112,26 @@ namespace MovieRental.DAL.Contexts
                 c.HasMany(c => c.ChildComments)
                     .WithOne(cc => cc.ParentComment)
                     .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            builder.Entity<WatchList>(w =>
+            {
+                w.HasKey(w => new { w.MovieId, w.UserId });
+
+                w.HasOne(w => w.User)
+                    .WithMany(u => u.WatchLists);
+
+                w.HasOne(w => w.Movie)
+                    .WithMany(m => m.WatchLists);
+
+                w.HasOne(w => w.Type)
+                    .WithMany(t => t.WatchLists);
+            });
+
+            builder.Entity<WatchListType>(wt =>
+            {
+                wt.HasMany(wt => wt.WatchLists)
+                    .WithOne(w => w.Type);
             });
 
             base.OnModelCreating(builder);

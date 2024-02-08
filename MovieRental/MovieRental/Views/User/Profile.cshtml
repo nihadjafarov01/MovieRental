@@ -8,8 +8,14 @@
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
                 <div class="d-flex align-items-center gap-3">
                     <div class="account-logo d-flex align-items-center position-relative">
-                        <img src="~/assets/images/pages/profile.webp" class="img-fluid object-cover rounded-3" alt="profile">
-                        <i class="fa-regular fa-pen-to-square"></i>
+                        @if(Model.ProfileImageUrl == null)
+                        {
+                            <img src="~/assets/images/blankProfilePhoto.png" class="img-fluid object-cover rounded-3" alt="profile">
+                        }
+                        else
+                        {
+                            <img src="@Model.ProfileImageUrl" class="img-fluid object-cover rounded-3" alt="profile">
+                        }
                     </div>
                     <div>
                         <h6 class="font-size-18 text-white fw-500">@Model.Username</h6>
@@ -25,8 +31,19 @@
             </div>
         </div>
     </div>
+    <style>
+        .divider {
+            border-left: 6px solid white;
+            height: 500px;
+            margin : 30px;
+        }
+
+        .activities{
+            width : 80%;
+        }
+    </style>
     <div class="tabs">
-        <div class="container-fluid">
+        <div class="container-fluid d-flex justify-content-between">
             <div class="content-details iq-custom-tab-style-two">
                 <ul class="d-flex justify-content-center nav nav-pills tab-header" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -523,6 +540,117 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="divider">
+
+            </div>
+            <div class="activities border-left offcanvas-width-80">
+                <div>
+                    <ul class="d-flex justify-content-center nav nav-pills tab-header">
+                        <li>
+                            <a >Latest Activities</a>
+                        </li>
+                    </ul>
+                    <div class="comments-wrap p-0  form-control" style="margin-bottom: 40px; margin-top: 20px;">
+                    <div class="comment-input">
+                        <div class="slider-ratting d-flex">
+                            <div class="user-avatar">
+                                @if (Model.ProfileImageUrl != null)
+                                {
+                                    <img src="@Model.ProfileImageUrl" class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                                }
+                                else
+                                {
+                                    <img src="~/assets/images/blankProfilePhoto.png" class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                                }
+                            </div>
+                            <div class="ci-form ms-2" style="width: -webkit-fill-available;">
+                                <div class="ihead d-flex align-items-center">
+                                    <div class="user-name">
+                                        <a asp-action="Profile" asp-controller="User" asp-route-username="@Model.Username" class="link-highlight ml-1">@Model.Username</a>
+                                    </div>
+                                    <div class="ms-4 time-ago">2024-02-08 14:26:45.103</div>
+                                </div>
+                                <div class="ibody">
+                                    <p>Test Content</p>
+                                </div>
+                                <div class="ibottom d-flex align-items-center">
+                                    <div class="ms-4">
+                                        <a class="reply-class">
+                                            <i class="fas fa-reply mr-1">
+
+                                            </i>Reply
+                                        </a>
+                                    </div>
+                                    <div class="ms-4">
+                                        <a>
+                                            <i class="far fa-thumbs-up mr-1"></i><span class="value"></span>
+                                        </a>
+                                    </div>
+                                    <div class="ms-4">
+                                        <a>
+                                            <i class="far fa-thumbs-down mr-1"></i><span class="value"></span>
+                                        </a>
+                                    </div>
+                                    <div class="ms-4">
+                                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h mr-1"></i>More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comments-wrap p-0 form-control" style="margin-bottom: 40px; margin-top: 20px;">
+                    <div class="comment-input">
+                        <div class="slider-ratting d-flex">
+                            <div class="user-avatar">
+                                @if (Model.ProfileImageUrl != null)
+                                {
+                                    <img src="@Model.ProfileImageUrl" class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                                }
+                                else
+                                {
+                                    <img src="~/assets/images/blankProfilePhoto.png" class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image" />
+                                }
+                            </div>
+                            <div class="ci-form ms-2" style="width: -webkit-fill-available;">
+                                <div class="ihead d-flex align-items-center">
+                                    <div class="user-name">
+                                        <a asp-action="Profile" asp-controller="User" asp-route-username="@Model.Username" class="link-highlight ml-1">@Model.Username</a>
+                                    </div>
+                                    <div class="ms-4 time-ago">2024-02-08 14:26:45.103</div>
+                                </div>
+                                <div class="ibody">
+                                    <p>Test Content</p>
+                                </div>
+                                <div class="ibottom d-flex align-items-center">
+                                    <div class="ms-4">
+                                        <a class="reply-class">
+                                            <i class="fas fa-reply mr-1">
+
+                                            </i>Reply
+                                        </a>
+                                    </div>
+                                    <div class="ms-4">
+                                        <a>
+                                            <i class="far fa-thumbs-up mr-1"></i><span class="value"></span>
+                                        </a>
+                                    </div>
+                                    <div class="ms-4">
+                                        <a>
+                                            <i class="far fa-thumbs-down mr-1"></i><span class="value"></span>
+                                        </a>
+                                    </div>
+                                    <div class="ms-4">
+                                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h mr-1"></i>More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 </div>
             </div>
         </div>

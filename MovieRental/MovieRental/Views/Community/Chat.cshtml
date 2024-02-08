@@ -127,7 +127,7 @@
     <div class="ms-2">
             <div class="col-6 text-end" style="width: -webkit-fill-available;">
                     <div class="iq-button">
-                    <button class="btn" onclick="scrollWin()" type="button" id="sendButton" value="Send Message">Send
+                    <button class="btn" type="button" id="sendButton" value="Send Message">Send
 
                     </button>
                     </div>
@@ -141,6 +141,19 @@
 
 <script src="~/microsoft-signalr/signalr.min.js"></script>
 <script>
+    document.getElementById("messageInput")
+        .addEventListener("keyup", function (event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                document.getElementById("id_of_button").click();
+            }
+            else {
+                console.log("salam");
+
+            }
+        });
+
+
     var chatContainer = document.getElementById("chatContainer");
     var toggleChatButton = document.getElementById("toggleChatButton");
 
@@ -227,10 +240,13 @@
     });
 
     document.getElementById("sendButton").addEventListener("click", function (event) {
-        var message = document.getElementById("messageInput").value;
-        connection.invoke("SendMessage", message).catch(function (err) {
+        var message = document.getElementById("messageInput");
+        connection.invoke("SendMessage", message.value.catch(function (err) {
             return console.error(err.toString());
         });
         event.preventDefault();
     });
+
+
+
 </script>

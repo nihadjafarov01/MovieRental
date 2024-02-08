@@ -7,5 +7,6 @@ namespace MovieRental.Core.Models
         public string ImdbId { get; set; }
         public List<Review> Reviews { get; set; }
         public List<Post> Posts { get; set; }
+        public List<WatchList> WatchLists { get; set; }
     }
 }

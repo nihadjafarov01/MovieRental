@@ -98,13 +98,13 @@
         <div class="message d-flex align-items-center" style="display: flex;justify-content: space-between;">
             <div class="" style="width: -webkit-fill-available;">
                 <div class="col-5" style="width: -webkit-fill-available;">
-                    <input placeholder="Send a message..." type="text" class="w-100 form-control" id="messageInput" />
+                    <input required placeholder="Send a message..." type="text" class="w-100 form-control" id="messageInput" />
                 </div>
             </div>
             <div class="ms-2">
                 <div class="col-6 text-end" style="width: -webkit-fill-available;">
                     <div class="iq-button">
-                        <button class="btn" onclick="scrollWin()" type="button" id="sendButton" value="Send Message">
+                        <button class="btn" type="button" id="sendButton" value="Send Message">
                             Send
 
                         </button>
@@ -206,10 +206,22 @@
 
     document.getElementById("sendButton").addEventListener("click", function (event) {
         var message = document.getElementById("messageInput").value;
-        connection.invoke("SendMessage", message).catch(function (err) {
-            return console.error(err.toString());
-        });
-        event.preventDefault();
+        if (!message || message.trim() === "") {
+        } else {
+            connection.invoke("SendMessage", message).catch(function (err) {
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        }
+    });
+
+
+    var messageInput = document.getElementById("messageInput");
+    messageInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("sendButton").click();
+        }
     });
 </script>
 <!-- CHAT SECTION END -->
@@ -229,6 +241,9 @@
                         <span class="iq-tag">
                             #@item.Title
                         </span>
+                        <p>
+                            @item.Posts.Count()
+                        </p>
                     </a>
                     </div>
             }

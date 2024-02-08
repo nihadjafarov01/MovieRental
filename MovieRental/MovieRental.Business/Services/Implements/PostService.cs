@@ -36,7 +36,7 @@ namespace MovieRental.Business.Services.Implements
 
         public async Task<PostVM> GetVmByIdAsync(int postId)
         {
-            var model = await _repository.GetByIdAsync(postId, false, "Tag", "Movie", "User", "Comments");
+            var model = await _repository.GetByIdAsync(postId, false, "Tag", "Movie", "User", "Comments", "Comments.User");
             var vm = _mapper.Map<PostListItemVM>(model);
             PostVM rvm = new PostVM
             {

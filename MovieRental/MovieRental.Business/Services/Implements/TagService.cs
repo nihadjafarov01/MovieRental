@@ -18,7 +18,7 @@ namespace MovieRental.Business.Services.Implements
 
         public IEnumerable<TagListItemVM> GetAll()
         {
-            var data = _repo.GetAll();
+            var data = _repo.GetAll(false, "Posts");
             var rdata = _mapper.Map<IEnumerable<TagListItemVM>>(data);
             return rdata;
         }
