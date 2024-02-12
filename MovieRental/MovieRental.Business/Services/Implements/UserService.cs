@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MovieRental.Business.Services.Interfaces;
 using MovieRental.Business.ViewModels.UserVMs;
 using MovieRental.Core.Models;
+using MovieRental.DAL.Contexts;
 using System.Security.Claims;
 
 namespace MovieRental.Business.Services.Implements
@@ -13,12 +15,14 @@ namespace MovieRental.Business.Services.Implements
         IMapper _mapper { get; }
         UserManager<AppUser> _userManager { get; }
         private readonly IHttpContextAccessor _httpContext;
+        readonly MovieRentalDbContext _context;
 
-        public UserService(UserManager<AppUser> userManager, IMapper mapper, IHttpContextAccessor httpContext)
+        public UserService(UserManager<AppUser> userManager, IMapper mapper, IHttpContextAccessor httpContext, MovieRentalDbContext context)
         {
             _userManager = userManager;
             _mapper = mapper;
             _httpContext = httpContext;
+            _context = context;
         }
 
         public IEnumerable<UserVM> GetAll()
@@ -56,6 +60,14 @@ namespace MovieRental.Business.Services.Implements
             var user = await _userManager.FindByNameAsync(username);
             UserProfileVM vm = _mapper.Map<UserProfileVM>(user);
             return vm;
+        }
+
+        public async Task<AppUser> GetCurrentUserAsync()
+        {
+            string username = _httpContext.HttpContext.User.Identity.Name;
+            //var user = await _userManager.FindByNameAsync(username);
+            AppUser user = await _context.Users.Include(u => u.WatchList).SingleOrDefaultAsync(u => u.UserName == username);
+            return user;
         }
     }
 }

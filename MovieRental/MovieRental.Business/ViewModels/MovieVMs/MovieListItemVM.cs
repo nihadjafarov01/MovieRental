@@ -1,4 +1,5 @@
 ﻿using MovieRental.Business.ViewModels.ReviewVMs;
+using MovieRental.Core.Models;
 
 namespace MovieRental.Business.ViewModels.MovieVMs
 {
@@ -10,5 +11,6 @@ namespace MovieRental.Business.ViewModels.MovieVMs
         public string ImdbId { get; set; }
         public float LocalRating { get; set; }
         public IEnumerable<MovieReviewsListItemVM> Reviews { get; set; }
+        public List<WatchListMovie> WatchListMovies { get; set; }
     }
 }

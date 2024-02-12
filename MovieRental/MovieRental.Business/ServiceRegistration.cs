@@ -16,6 +16,8 @@ namespace MovieRental.Business
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IWatchListRepository, WatchListRepository>();
+            services.AddScoped<IWatchListMovieRepository, WatchListMovieRepository>();
 
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IAuthService, AuthService>();
@@ -25,6 +27,8 @@ namespace MovieRental.Business
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IWatchListService, WatchListService>();
+            services.AddScoped<IWatchListMovieService, WatchListMovieService>();
 
             services.AddAutoMapper(typeof(MovieMappingProfile));
 

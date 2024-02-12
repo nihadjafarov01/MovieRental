@@ -11,11 +11,12 @@ namespace MovieRental.Business.Services.Implements
     {
         IMovieRepository _repo { get; }
         IMapper _mapper { get; }
-
-        public MovieService(IMapper mapper, IMovieRepository repo)
+        IUserService _userService { get; }
+        public MovieService(IMapper mapper, IMovieRepository repo, IUserService userService)
         {
             _mapper = mapper;
             _repo = repo;
+            _userService = userService;
         }
 
         public async Task CreateAsync(MovieCreateVM vm)
@@ -53,7 +54,7 @@ namespace MovieRental.Business.Services.Implements
 
         public async Task<MovieListItemVM> GetByIdAsync(int id)
         {
-            var model = await _repo.GetByIdAsync(id, false, "Reviews");
+            var model = await _repo.GetByIdAsync(id, false, "Reviews", "WatchListMovies");
             var vm = _mapper.Map<MovieListItemVM>(model);
             return vm;
         }
@@ -72,6 +73,38 @@ namespace MovieRental.Business.Services.Implements
         {
             var model = _mapper.Map<Movie>(vm);
             _repo.Update(model);
+            await _repo.SaveAsync();
+        }
+        public async Task AddWantToWatch(int movieId)
+        {
+            var movie = await _repo.GetByIdAsync(movieId, false, "WatchListMovies");
+            var user = await _userService.GetCurrentUserAsync();
+            movie.WatchListMovies.Add(new WatchListMovie { MovieId = movieId, WatchListId = user.WatchList.Id});
+            await _repo.SaveAsync();
+        }
+        public async Task RemoveWantToWatch(int movieId)
+        {
+            var movie = await _repo.GetByIdAsync(movieId, false, "WatchListMovies");
+            var user = await _userService.GetCurrentUserAsync();
+            var watchListMovie = movie.WatchListMovies.SingleOrDefault(w => w.IsWatched == false && w.WatchListId == user.WatchList.Id);
+            var result = movie.WatchListMovies.Remove(watchListMovie);
+            await _repo.SaveAsync();
+        }
+
+        public async Task AddWatched(int movieId)
+        {
+            var movie = await _repo.GetByIdAsync(movieId, false, "WatchListMovies");
+            var user = await _userService.GetCurrentUserAsync();
+            movie.WatchListMovies.Add(new WatchListMovie { MovieId = movieId, WatchListId = user.WatchList.Id, IsWatched = true });
+            await _repo.SaveAsync();
+        }
+
+        public async Task RemoveWatched(int movieId)
+        {
+            var movie = await _repo.GetByIdAsync(movieId, false, "WatchListMovies");
+            var user = await _userService.GetCurrentUserAsync();
+            var watchListMovie = movie.WatchListMovies.SingleOrDefault(w => w.IsWatched == true && w.WatchListId == user.WatchList.Id);
+            var result = movie.WatchListMovies.Remove(watchListMovie);
             await _repo.SaveAsync();
         }
     }

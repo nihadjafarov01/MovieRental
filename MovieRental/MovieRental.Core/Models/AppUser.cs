@@ -12,7 +12,7 @@ namespace MovieRental.Core.Models
         public List<Review> Reviews { get; set; }
         public List<Post> Posts { get; set; }
         public List<Comment> Comments { get; set; }
-        public DateTime JoinedTime { get; set; } = DateTime.Now;
-        public List<WatchList> WatchLists { get; set; }
+        public DateTime JoinedTime { get; set; } = DateTime.UtcNow;
+        public WatchList WatchList { get; set; }
     }
 }

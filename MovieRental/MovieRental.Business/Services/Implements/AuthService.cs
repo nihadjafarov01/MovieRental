@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MovieRental.Business.Services.Interfaces;
 using MovieRental.Business.ViewModels.AuthVMs;
+using MovieRental.Business.ViewModels.WatchListVMs;
 using MovieRental.Core.Enums;
 using MovieRental.Core.Models;
 using System.Data;
@@ -12,12 +13,14 @@ namespace MovieRental.Business.Services.Implements
         UserManager<AppUser> _userManager { get; }
         SignInManager<AppUser> _signInManager { get; }
         RoleManager<IdentityRole> _roleManager { get; }
+        readonly IWatchListService _watchListService;
 
-        public AuthService(RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        public AuthService(RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IWatchListService watchListService)
         {
             _roleManager = roleManager;
             _signInManager = signInManager;
             _userManager = userManager;
+            _watchListService = watchListService;
         }
 
         public async Task<bool> CreateInits()
@@ -80,6 +83,11 @@ namespace MovieRental.Business.Services.Implements
                 Surname = vm.Surname,
             };
             var result = await _userManager.CreateAsync(user, vm.Password);
+            if (result.Succeeded)
+            {
+                AppUser user2 = await _userManager.FindByNameAsync(vm.Username);
+                await _watchListService.CreateAsync(new WatchListCreateVM { UserId =  user2.Id});
+            }
             //await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
             return result;
         }

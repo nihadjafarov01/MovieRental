@@ -390,38 +390,6 @@ namespace MovieRental.DAL.Migrations
 
             modelBuilder.Entity("MovieRental.Core.Models.WatchList", b =>
                 {
-                    b.Property<int>("MovieId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("TypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdatedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("MovieId", "UserId");
-
-                    b.HasIndex("TypeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("WatchLists");
-                });
-
-            modelBuilder.Entity("MovieRental.Core.Models.WatchListType", b =>
-                {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
@@ -431,16 +399,49 @@ namespace MovieRental.DAL.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
-                    b.ToTable("WatchListTypes");
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("WatchLists");
+                });
+
+            modelBuilder.Entity("MovieRental.Core.Models.WatchListMovie", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WatchListId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsWatched")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("MovieId", "WatchListId", "IsWatched");
+
+                    b.HasIndex("WatchListId");
+
+                    b.ToTable("WatchListMovies");
                 });
 
             modelBuilder.Entity("MovieRental.Core.Models.AppUser", b =>
@@ -593,29 +594,32 @@ namespace MovieRental.DAL.Migrations
 
             modelBuilder.Entity("MovieRental.Core.Models.WatchList", b =>
                 {
+                    b.HasOne("MovieRental.Core.Models.AppUser", "User")
+                        .WithOne("WatchList")
+                        .HasForeignKey("MovieRental.Core.Models.WatchList", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MovieRental.Core.Models.WatchListMovie", b =>
+                {
                     b.HasOne("MovieRental.Core.Models.Movie", "Movie")
-                        .WithMany("WatchLists")
+                        .WithMany("WatchListMovies")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MovieRental.Core.Models.WatchListType", "Type")
-                        .WithMany("WatchLists")
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MovieRental.Core.Models.AppUser", "User")
-                        .WithMany("WatchLists")
-                        .HasForeignKey("UserId")
+                    b.HasOne("MovieRental.Core.Models.WatchList", "WatchList")
+                        .WithMany("WatchListMovies")
+                        .HasForeignKey("WatchListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Movie");
 
-                    b.Navigation("Type");
-
-                    b.Navigation("User");
+                    b.Navigation("WatchList");
                 });
 
             modelBuilder.Entity("MovieRental.Core.Models.Comment", b =>
@@ -629,7 +633,7 @@ namespace MovieRental.DAL.Migrations
 
                     b.Navigation("Reviews");
 
-                    b.Navigation("WatchLists");
+                    b.Navigation("WatchListMovies");
                 });
 
             modelBuilder.Entity("MovieRental.Core.Models.Post", b =>
@@ -642,9 +646,9 @@ namespace MovieRental.DAL.Migrations
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("MovieRental.Core.Models.WatchListType", b =>
+            modelBuilder.Entity("MovieRental.Core.Models.WatchList", b =>
                 {
-                    b.Navigation("WatchLists");
+                    b.Navigation("WatchListMovies");
                 });
 
             modelBuilder.Entity("MovieRental.Core.Models.AppUser", b =>
@@ -655,7 +659,8 @@ namespace MovieRental.DAL.Migrations
 
                     b.Navigation("Reviews");
 
-                    b.Navigation("WatchLists");
+                    b.Navigation("WatchList")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MovieRental.DAL.Migrations
 {
     [DbContext(typeof(MovieRentalDbContext))]
-    [Migration("20240205132032_CreatedTagsPostsComments")]
-    partial class CreatedTagsPostsComments
+    [Migration("20240212105356_CreatedWatchListMoviesTable")]
+    partial class CreatedWatchListMoviesTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -234,6 +234,10 @@ namespace MovieRental.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -295,11 +299,19 @@ namespace MovieRental.DAL.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int?>("MovieId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TagId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("timestamp with time zone");
@@ -378,6 +390,62 @@ namespace MovieRental.DAL.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("MovieRental.Core.Models.WatchList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("WatchLists");
+                });
+
+            modelBuilder.Entity("MovieRental.Core.Models.WatchListMovie", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WatchListId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsWatched")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("MovieId", "WatchListId", "IsWatched");
+
+                    b.HasIndex("WatchListId");
+
+                    b.ToTable("WatchListMovies");
+                });
+
             modelBuilder.Entity("MovieRental.Core.Models.AppUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -387,6 +455,9 @@ namespace MovieRental.DAL.Migrations
 
                     b.Property<bool>("IsVerified")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTime>("JoinedTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -523,6 +594,36 @@ namespace MovieRental.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MovieRental.Core.Models.WatchList", b =>
+                {
+                    b.HasOne("MovieRental.Core.Models.AppUser", "User")
+                        .WithOne("WatchList")
+                        .HasForeignKey("MovieRental.Core.Models.WatchList", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MovieRental.Core.Models.WatchListMovie", b =>
+                {
+                    b.HasOne("MovieRental.Core.Models.Movie", "Movie")
+                        .WithMany("WatchListMovies")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieRental.Core.Models.WatchList", "WatchList")
+                        .WithMany("WatchListMovies")
+                        .HasForeignKey("WatchListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("WatchList");
+                });
+
             modelBuilder.Entity("MovieRental.Core.Models.Comment", b =>
                 {
                     b.Navigation("ChildComments");
@@ -533,6 +634,8 @@ namespace MovieRental.DAL.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("WatchListMovies");
                 });
 
             modelBuilder.Entity("MovieRental.Core.Models.Post", b =>
@@ -545,6 +648,11 @@ namespace MovieRental.DAL.Migrations
                     b.Navigation("Posts");
                 });
 
+            modelBuilder.Entity("MovieRental.Core.Models.WatchList", b =>
+                {
+                    b.Navigation("WatchListMovies");
+                });
+
             modelBuilder.Entity("MovieRental.Core.Models.AppUser", b =>
                 {
                     b.Navigation("Comments");
@@ -552,6 +660,9 @@ namespace MovieRental.DAL.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("WatchList")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

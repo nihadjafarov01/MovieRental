@@ -1,9 +1,8 @@
-﻿using MovieRental.Core.Enums;
-using MovieRental.Core.Models.Common;
+﻿using MovieRental.Core.Models;
 
-namespace MovieRental.Core.Models
+namespace MovieRental.Business.ViewModels.WatchListVMs
 {
-    public class WatchList : BaseModel
+    public class WatchListCreateVM
     {
         public string UserId { get; set; }
         public AppUser User { get; set; }
