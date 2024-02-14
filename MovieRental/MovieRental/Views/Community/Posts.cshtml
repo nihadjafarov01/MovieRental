@@ -6,10 +6,10 @@
                 <div class="row align-items-center">
                     <div class="col-sm-12">
                         <nav aria-label="breadcrumb" class="text-center">
-                            <h2 class="title">FAQ</h2>
+                            <h2 class="title">Posts</h2>
                             <ol class="breadcrumb justify-content-center">
-                                <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
-                                <li class="breadcrumb-item active">FAQ</li>
+                                <li class="breadcrumb-item"><a asp-action="Index">Community</a></li>
+                        <li class="breadcrumb-item active">Posts</li>
                             </ol>
                         </nav>
                     </div>
@@ -24,14 +24,14 @@
                 <div class="iq-accordian iq-accordian-square">
             @foreach(var item in Model)
             {
-                <div id="comments" class="comments-area validate-form form-control">
+                <div id="comments" class="comments-area validate-form form-control mb-4">
                     <div class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
                         <ul class="ratting-start p-0 m-0 list-inline text-warning d-flex align-items-center justify-content-left">
                             <li>
                                 <p class="my-2">#@item.Tag.Title</p>
                             </li>
                         </ul>
-                        <span class="text-white ms-2 time-ago">@item.CreatedTime.AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss")</span>
+                        <span class="text-white ms-2">@item.CreatedTime.ToLocalTime().ToString("dd MMMM yyyy")</span>
                     </div>
                     <a asp-action="Post" asp-route-postId="@item.Id" class="text-white fw-500 my-2">
                         @item.Title
@@ -68,59 +68,3 @@
         </div>
 
 </main>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var timeAgoElements = document.querySelectorAll('.time-ago');
-        timeAgoElements.forEach(function (element) {
-            element.textContent = timeAgo(element.textContent);
-        });
-    });
-    function timeAgo(dateString) {
-        const date = new Date(dateString);
-        const seconds = Math.floor((new Date() - date) / 1000);
-
-        const interval = Math.floor(seconds / 31536000);
-
-        if (interval > 1) {
-            return interval + " years ago";
-        }
-        if (interval === 1) {
-            return interval + " year ago";
-        }
-
-        const months = Math.floor(seconds / 2628000);
-        if (months > 1) {
-            return months + " months ago";
-        }
-        if (months === 1) {
-            return months + " month ago";
-        }
-
-        const days = Math.floor(seconds / 86400);
-        if (days > 1) {
-            return days + " days ago";
-        }
-        if (days === 1) {
-            return days + " day ago";
-        }
-
-        const hours = Math.floor(seconds / 3600);
-        if (hours > 1) {
-            return hours + " hours ago";
-        }
-        if (hours === 1) {
-            return hours + " hour ago";
-        }
-
-        const minutes = Math.floor(seconds / 60);
-        if (minutes > 1) {
-            return minutes + " minutes ago";
-        }
-        if (minutes === 1) {
-            return minutes + " minute ago";
-        }
-
-        return "just now";
-    }
-
-</script>

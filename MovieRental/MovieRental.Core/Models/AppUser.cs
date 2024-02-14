@@ -14,5 +14,6 @@ namespace MovieRental.Core.Models
         public List<Comment> Comments { get; set; }
         public DateTime JoinedTime { get; set; } = DateTime.UtcNow;
         public WatchList WatchList { get; set; }
+        public bool IsPublic { get; set; }
     }
 }

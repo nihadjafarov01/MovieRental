@@ -47,8 +47,13 @@ namespace MovieRental
 
             app.MapControllerRoute(
                 name: "userProfile",
-                pattern: "user/profile/{username}",
+                pattern: "{username}/profile",
                 defaults: new { controller = "User", action = "Profile" });
+
+            app.MapControllerRoute(
+                name: "userWatchList",
+                pattern: "{username}/watchlist",
+                defaults: new { controller = "User", action = "WatchList" });
 
             app.MapControllerRoute(
                 name: "post",

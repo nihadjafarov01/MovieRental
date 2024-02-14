@@ -11,8 +11,8 @@
                                 <p class="my-2">#@Model.PostListItemVM.Tag.Title</p>
                             </li>
                         </ul>
-                    <span class="text-white ms-2">@Model.PostListItemVM.CreatedTime</span>
-                    </div>
+                    <span class="text-white ms-2 posts-time">@Model.PostListItemVM.CreatedTime.ToLocalTime().ToString("dd MMMM yyyy")</span>
+                </div>
                 <p class="fw-500 my-2">
                     @Model.PostListItemVM.Title
                     </p>
@@ -69,11 +69,11 @@
                             Comment as <a asp-action="Profile" asp-controller="User" asp-route-username="@User.Identity.Name" class="link-highlight ml-1">@User.Identity.Name</a>
                         </div>
 
-                        <input asp-for="@Model.CommentCreateVM.Content" class="form-control" id="commentInput">
+                        <input asp-for="@Model.CommentCreateVM.Content" class="form-control" id="commentInput" oninput="toggleSubmitButton()">
 
                         <div class="ci-buttons" id="commentButtons" style="display: none;">
                             <div class="btn btn-sm btn-secondary small-btn" id="cancelButton">Cancel</div>
-                            <button id="submitButton" type="submit" asp-route-postId="@Model.PostListItemVM.Id" asp-action="Create" asp-controller="Comment" class="btn btn-sm btn-primary ml-2 small-btn">Submit</button>
+                            <button id="submitButton" type="submit" asp-route-postId="@Model.PostListItemVM.Id" asp-action="Create" asp-controller="Comment" class="btn btn-sm btn-primary ml-2 small-btn" disabled>Submit</button>
                         </div>
                     </div>
                 </div>
@@ -151,6 +151,14 @@
 
                     // Rest of the timeAgo function remains unchanged...
                 }
+
+                function toggleSubmitButton() {
+                    var commentInput = document.getElementById('commentInput');
+                    var submitButton = document.getElementById('submitButton');
+
+                    // Enable the submit button if the input is not empty, otherwise disable it
+                    submitButton.disabled = !commentInput.value.trim();
+                }
             </script>
 
 
@@ -179,7 +187,7 @@
                             <div class="user-name">
                                     <a asp-action="Profile" asp-controller="User" asp-route-username="@item.User.UserName" class="link-highlight ml-1">@item.User.UserName</a>
                             </div>
-                                        <div class="ms-4 time-ago" data-timestamp="@item.CreatedTime.AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss")">@item.CreatedTime.AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss")</div>
+                                        <div class="ms-4 time-ago" data-timestamp="@item.CreatedTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm:ss")">@item.CreatedTime.AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss")</div>
                                     </div>
                             <div class="ibody">
                                 <p>@item.Content</p>

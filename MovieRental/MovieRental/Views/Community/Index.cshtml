@@ -1,5 +1,6 @@
-﻿@using MovieRental.Business.ViewModels.TagVMs
-@model IEnumerable<TagListItemVM>
+﻿@using MovieRental.Business.ViewModels.CommunityVMs
+@using MovieRental.Business.ViewModels.TagVMs
+@model CommunityVM
         <!--bread-crumb-->
 <div class="iq-breadcrumb" style="background-image: url('@Url.Content("~/assets/images/pages/01.webp")');">
             <div class="container-fluid">
@@ -144,6 +145,7 @@
         // var img = document.createElement("img");
         // document.getElementById("messagesList").appendChild(li);
         // document.getElementById("messagesList").appendChild(img);
+        if (profileImageUrl == null) { profileImageUrl = "@Url.Content("~/assets/images/blankProfilePhoto.png")" }
         var messagesList = document.getElementById("messagesList");
         messagesList.innerHTML += `
                 <div class="comments-wrap p-0" style="margin-bottom: 40px; margin-top: 20px;">
@@ -151,41 +153,19 @@
                 <div class="form-control" style="width: max-content;">
 
                 <div class="slider-ratting d-flex">
-                    <div class="user-avatar">
-                        <img src=${profileImageUrl}  class="icon-18" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="Profile Image">
-                    </div>
+    <div class="iq-avatar me-2">
+                               <img class="avatar-40 rounded-small" src=${profileImageUrl} alt="#" data-bs-original-title="" title="">
+                            </div>
                     <div class="ci-form ms-2" style="width: -webkit-fill-available;">
                         <div class="ihead d-flex align-items-center">
                             <div class="user-name">
                                     <a class="link-highlight ml-1" href="/user/profile/${user}">${user}</a>
                             </div>
-                            <div class="ms-4 time-ago" data-timestamp="2024-02-07T12:32:54">7 hours ago</div>
                         </div>
                         <div class="ibody">
-                            <p>${message}</p>
+                            <p>${message}</p>   
                         </div>
-                        <div class="ibottom d-flex align-items-center">
-                            <div class="ms-4">
-                                <a class="reply-class">
-                                    <i class="fas fa-reply mr-1">
 
-                                    </i>Reply
-                                </a>
-                            </div>
-                            <div class="ms-4">
-                                <a>
-                                    <i class="far fa-thumbs-up mr-1"></i><span class="value"></span>
-                                </a>
-                            </div>
-                            <div class="ms-4">
-                                <a>
-                                    <i class="far fa-thumbs-down mr-1"></i><span class="value"></span>
-                                </a>
-                            </div>
-                            <div class="ms-4">
-                                <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h mr-1"></i>More</a>
-                            </div>
-                        </div>
                         </div>
                      </div>
                 </div>
@@ -234,7 +214,7 @@
                     <h4 class="main-title text-capitalize mb-0">Movie Tag</h4>
                 </div>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6">
-            @foreach(var item in Model)
+            @foreach(var item in Model.Tags)
             {
                 <div class="col">
                         <a asp-action="Posts" asp-route-tagTitle="@item.Title" class="iq-tag-box">
@@ -250,12 +230,59 @@
                 </div>
                 <div class="text-center">
                     <div class="iq-button">
-                        <a href="javascript:void(0)" class="btn text-uppercase position-relative">
-                        <span class="button-text">load more</span>
+                        <a href="javascript:void(0)" class="btn position-relative">
+                        <span class="button-text">Create Post</span>
                         <i class="fa-solid fa-play"></i>
                     </a>
                     </div>
                 </div>
+
+        <form asp-action="CreatePost" method="post" class="row">
+                    <div class="col-sm-12">
+                <div class="form-group px-5">
+                            <label asp-for=PostCreateVM.Title class="mb-2">
+                                Title
+                                <span class="required">
+                                    *
+                                </span>
+                            </label>
+                            <input asp-for="PostCreateVM.Title" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                <div class="form-group px-5">
+                            <label asp-for=PostCreateVM.Description class="mb-2">
+                                Description
+                                <span class="required">
+                                    *
+                                </span>
+                            </label>
+                            <input asp-for=PostCreateVM.Description class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                    <div class="form-group px-5">
+                    <label asp-for=PostCreateVM.TagId class="form-label flex-grow-1">
+                        <strong>
+                            Tag
+                        </strong>
+                    </label>
+                    <select asp-for=PostCreateVM.TagId asp-items="ViewBag.Tags" id="movie-access" type="select" class="form-control select2-basic-multiple" placeholder="select movie access">
+                        <option value="none" disabled selected>Select tags</option>
+                    </select>
+                </div>
+            </div>
+                    <div class="col-sm-12">
+                        <div class="form-submit mt-4 px-5">
+                            <div class="iq-button">
+                        <button asp-action="CreatePost" type="submit" class="btn text-uppercase position-relative">
+                                    <span class="button-text">Submit</span>
+                                    <i class="fa-solid fa-play"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </section>
 

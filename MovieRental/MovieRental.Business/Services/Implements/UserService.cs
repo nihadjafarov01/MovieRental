@@ -57,7 +57,7 @@ namespace MovieRental.Business.Services.Implements
 
         public async Task<UserProfileVM> GetUserByUsernameAsync(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            AppUser user = await _context.Users.Include(u => u.WatchList).ThenInclude(u => u.WatchListMovies).ThenInclude(u => u.Movie).SingleOrDefaultAsync(u => u.UserName == username);
             UserProfileVM vm = _mapper.Map<UserProfileVM>(user);
             return vm;
         }
@@ -66,7 +66,7 @@ namespace MovieRental.Business.Services.Implements
         {
             string username = _httpContext.HttpContext.User.Identity.Name;
             //var user = await _userManager.FindByNameAsync(username);
-            AppUser user = await _context.Users.Include(u => u.WatchList).SingleOrDefaultAsync(u => u.UserName == username);
+            AppUser user = await _context.Users.Include(u => u.WatchList).ThenInclude(u => u.WatchListMovies).ThenInclude(u => u.Movie).SingleOrDefaultAsync(u => u.UserName == username);
             return user;
         }
     }

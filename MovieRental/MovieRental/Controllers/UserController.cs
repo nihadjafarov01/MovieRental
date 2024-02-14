@@ -25,5 +25,10 @@ namespace MovieRental.Controllers
             }
             return View(vm);
         }
+        public async Task<IActionResult> WatchList([FromRoute] string username)
+        {
+            var vm = await _userService.GetUserByUsernameAsync(username);
+            return View(vm.WatchList);
+        }
     }
 }
