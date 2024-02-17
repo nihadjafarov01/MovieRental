@@ -9,7 +9,7 @@ namespace MovieRental.Business
 {
     public static class ServiceRegistration
     {
-        public static IServiceCollection AddBusinessServices(this IServiceCollection services)
+        public static IServiceCollection AddBusinessServices(this IServiceCollection services, string rootpath)
         {
             services.AddScoped<IMovieRepository, MovieRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
@@ -29,6 +29,11 @@ namespace MovieRental.Business
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IWatchListService, WatchListService>();
             services.AddScoped<IWatchListMovieService, WatchListMovieService>();
+
+            services.AddAutoMapper(opt =>
+            {
+                opt.AddProfile(new UserMappingProfile(rootpath));
+            });
 
             services.AddAutoMapper(typeof(MovieMappingProfile));
 

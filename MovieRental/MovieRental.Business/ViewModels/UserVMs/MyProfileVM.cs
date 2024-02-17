@@ -8,5 +8,6 @@
         public string Username { get; set; }
         public string Email { get; set; }
         public bool IsPublic { get; set; }
+        public MyProfileUpdateVM MyProfileUpdateVM { get; set; }
     }
 }

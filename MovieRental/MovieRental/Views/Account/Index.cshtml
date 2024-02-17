@@ -1,34 +1,202 @@
 ﻿@using MovieRental.Business.ViewModels.UserVMs
 
 @model MyProfileVM
+<script src="~/admin/assets/vendor/sweetalert2/dist/sweetalert2.min.js" async></script>
+<script src="~/admin/assets/js/plugins/sweet-alert.js" defer></script>
+<link rel="stylesheet" href="~/admin/assets/vendor/sweetalert2/dist/sweetalert2.min.css">
+
+<script>
+    // Wait for the DOM to be ready
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the checkbox and form elements
+        var checkbox = document.getElementById('myCheckbox');
+        var form = document.getElementById('myForm');
+
+        // Add an event listener to the checkbox
+        checkbox.addEventListener('change', function () {
+            // Check if the checkbox is checked
+            if (checkbox.checked) {
+                Swal.fire({
+                    title: 'Switch to public account?',
+                    text: "Anyone can see your watchlist.",
+                    showCancelButton: true,
+                    backdrop: `rgba(60,60,60,0.8)`,
+                    confirmButtonText: 'Switch to public',
+                    confirmButtonColor: "#c03221"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Use jQuery to submit the form asynchronously
+                        $.ajax({
+                            type: form.method,
+                            url: form.action,
+                            data: $(form).serialize(),
+                            success: function (response) {
+                                // Handle the success response as needed
+                                console.log('Form submitted successfully:', response);
+                            },
+                            error: function (error) {
+                                // Handle the error response as needed
+                                console.error('Form submission error:', error);
+                            }
+                        });
+                    } else {
+                        // If the user cancels, revert the checkbox change
+                        checkbox.checked = !checkbox.checked;
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Switch to private account?',
+                    text: "No one can see your watchlist.",
+                    showCancelButton: true,
+                    backdrop: `rgba(60,60,60,0.8)`,
+                    confirmButtonText: 'Switch to private',
+                    confirmButtonColor: "#c03221"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Use jQuery to submit the form asynchronously
+                        $.ajax({
+                            type: form.method,
+                            url: form.action,
+                            data: $(form).serialize(),
+                            success: function (response) {
+                                // Handle the success response as needed
+                                console.log('Form submitted successfully:', response);
+                            },
+                            error: function (error) {
+                                // Handle the error response as needed
+                                console.error('Form submission error:', error);
+                            }
+                        });
+                    } else {
+                        // If the user cancels, revert the checkbox change
+                        checkbox.checked = !checkbox.checked;
+                    }
+                });
+            }
+        });
+
+        // Add an event listener to the form submit
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            // Perform any additional form handling here
+        });
+    });
+</script>
+
+
+
+
 
 <section class="section-padding-bottom">
     <div class="profile-box">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="account-logo d-flex align-items-center position-relative">
-                        @if(Model.ProfileImageUrl == null)
-                        {
-                            <img src="~/assets/images/blankProfilePhoto.png" class="img-fluid object-cover rounded-3" alt="profile">
+                    <style>
+                        /* Add this style to change the cursor to a pointer on hover */
+                        label img:hover {
+                            cursor: pointer;
                         }
-                        else
-                        {
-                            <img src="@Model.ProfileImageUrl" class="img-fluid object-cover rounded-3" alt="profile">
-                        }
+                    </style>
+                    <form asp-action="Update" method="post" enctype="multipart/form-data" class="account-logo d-flex align-items-center position-relative" id="profileForm">
+                        <input asp-for="@Model.MyProfileUpdateVM.ProfileImageFile" id="profileImageInput" style="display: none;" />
+                        <label>
+                            @if (String.IsNullOrEmpty(Model.ProfileImageUrl))
+                            {
+                                <img id="profileImage" src="~/assets/images/blankProfilePhoto.png" class="img-fluid object-cover rounded-3" alt="profile" onclick="handleImageClick()">
+                            }
+                            else
+                            {
+                                <img id="profileImage" src="~/images/profile/@Model.ProfileImageUrl" class="img-fluid object-cover rounded-3" alt="profile" onclick="handleImageClick()">
+                            }
+                        </label>
                         <i class="fa-regular fa-pen-to-square"></i>
-                    </div>
+                    </form>
+
+                    <script>
+                        function submitForm() {
+                            var form = document.getElementById('profileForm');
+                            var formData = new FormData(form);
+
+                            $.ajax({
+                                url: $(form).attr('action'),
+                                method: 'POST',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: function (data) {
+                                    var newProfileImageUrl = $(data).find('#profileImage').attr('src');
+                                    $('#profileImage').attr('src', newProfileImageUrl);
+                                },
+                                error: function (error) {
+                                    console.error(error);
+                                }
+                            });
+                        }
+
+                        function handleImageClick() {
+                            var profileImageInput = document.getElementById('profileImageInput');
+                            var profileImage = document.getElementById('profileImage');
+
+                            if (!profileImage.src.includes('blankProfilePhoto.png')) {
+                                // Show SweetAlert for image upload confirmation with a custom button
+                                Swal.fire({
+                                    title: 'Confirm Image Upload',
+                                    text: 'Upload a new profile photo or remove the current photo?',
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    showConfirmButton: true,
+                                    confirmButtonText: 'Upload Photo',
+                                    cancelButtonText: 'Remove Current Photo',
+                                    cancelButtonColor: '#d33',
+                                    customClass: {
+                                        confirmButton: 'custom-upload-button'
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // User wants to upload, no need to trigger the file input click here
+                                        // Instead, listen for the change event on the file input
+                                        profileImageInput.click();
+                                        profileImageInput.addEventListener('change', function () {
+                                            submitForm();
+                                        });
+                                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                        // User wants to remove, set ProfileImageFile to null and submit the form
+                                        profileImageInput.value = null;
+                                        submitForm();
+                                    }
+                                });
+                            } else {
+                                // No need to show SweetAlert, directly trigger file input click
+                                profileImageInput.click();
+                                profileImageInput.addEventListener('change', function () {
+                                    submitForm();
+                                });
+                            }
+                        }
+
+                        // Attach a change event handler to the file input
+                        $('#profileImageInput').change(function () {
+                            submitForm();
+                        });
+                    </script>
+
+
+                    <!-- Your form and HTML code -->
+
+
                     <div>
                         <h6 class="font-size-18 text-white fw-500">@Model.Username</h6>
                         <span class="font-size-14 text-white fw-500">@Model.Email</span>
                     </div>
                 </div>
-                <div class="iq-button">
-                    <a href="pricing-plan.html" class="btn text-uppercase position-relative">
-                        <span class="button-text">Subscription</span>
-                        <i class="fa-solid fa-play"></i>
-                    </a>
-                </div>
+                <form method="post" asp-action="Update" class="d-flex justify-content-between" id="myForm">
+                <p>Puplic account</p>
+                    <div class="form-check form-switch ms-2">
+                        <input asp-for="@Model.MyProfileUpdateVM.IsPublic" class="form-check-input" type="checkbox" id="myCheckbox">
+                    </div>
+                </form>
             </div>
         </div>
     </div>

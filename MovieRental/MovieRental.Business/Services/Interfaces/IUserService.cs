@@ -12,6 +12,9 @@ namespace MovieRental.Business.Services.Interfaces
         public Task<string> GetUserIdAsync();
         public Task<UserProfileVM> GetUserByUsernameAsync(string username);
         public Task<AppUser> GetCurrentUserAsync();
-
+        public Task ChangeVisibility(MyProfileUpdateVM vm);
+        public Task ChangeProfileImage(MyProfileUpdateVM vm, string rootPath);
+        public Task RemoveProfileImage();
+        
     }
 }

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MovieRental.Business.Helpers;
 using MovieRental.Business.Services.Interfaces;
 using MovieRental.Business.ViewModels.UserVMs;
 using MovieRental.Core.Models;
@@ -68,6 +70,34 @@ namespace MovieRental.Business.Services.Implements
             //var user = await _userManager.FindByNameAsync(username);
             AppUser user = await _context.Users.Include(u => u.WatchList).ThenInclude(u => u.WatchListMovies).ThenInclude(u => u.Movie).SingleOrDefaultAsync(u => u.UserName == username);
             return user;
+        }
+
+        public async Task ChangeVisibility(MyProfileUpdateVM vm)
+        {
+            var user = await GetCurrentUserAsync();
+            user.IsPublic = vm.IsPublic;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ChangeProfileImage(MyProfileUpdateVM vm, string rootPath)
+        {
+            var user = await GetCurrentUserAsync();
+            if (vm.ProfileImageFile != null)
+            {
+                user.ProfileImageUrl = await vm.ProfileImageFile.SaveAndProvideNameAsync(rootPath);
+            }
+            else
+            {
+                user.ProfileImageUrl = null;
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveProfileImage()
+        {
+            var user = await GetCurrentUserAsync();
+            user.ProfileImageUrl = null;
+            await _context.SaveChangesAsync();
         }
     }
 }

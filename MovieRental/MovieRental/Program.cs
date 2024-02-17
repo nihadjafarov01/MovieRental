@@ -14,7 +14,7 @@ namespace MovieRental
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDALServices();
-            builder.Services.AddBusinessServices();
+            builder.Services.AddBusinessServices(builder.Environment.WebRootPath);
 
             builder.Services.AddHttpContextAccessor();
 
