@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieRental.Business.Services.Interfaces;
 using MovieRental.Business.ViewModels.UserVMs;
 
 namespace MovieRental.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         IWebHostEnvironment _webHostEnvironment;

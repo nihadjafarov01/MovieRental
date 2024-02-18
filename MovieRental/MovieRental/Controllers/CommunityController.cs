@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MovieRental.Business.Services.Interfaces;
 using MovieRental.Business.ViewModels.CommunityVMs;
@@ -6,6 +7,7 @@ using MovieRental.Business.ViewModels.PostVMs;
 
 namespace MovieRental.Controllers
 {
+    [Authorize]
     public class CommunityController : Controller
     {
         readonly ITagService _tagService;

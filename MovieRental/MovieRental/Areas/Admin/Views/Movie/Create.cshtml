@@ -1,0 +1,48 @@
+﻿@using MovieRental.Business.ViewModels.AdminVMs.MovieVMs
+@model MovieCreateVM
+<div class="content-inner container-fluid pb-0" id="page_layout">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card pb-3">
+                <div class="card-body">
+    <form method="post">
+
+        <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel1">Add New Movie</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="section-form">
+                <fieldset>
+                    <legend>Movie</legend>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group px-5 ">
+                                <label class="form-label flex-grow-1" for="Movie Name">
+                                    <strong>Movie Name</strong> <span class="text-danger">*</span>:
+                                </label>
+                                <input asp-for="ImdbId" class="form-control" placeholder="Enter Movie Name" />
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+            </div>
+        </div>
+        <div class="offcanvas-footer border-top">
+            <div class="d-grid d-flex gap-3 p-3">
+                <button asp-action="Create" type="submit" class="btn btn-primary d-block">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Save
+                </button>
+                <a asp-action="Index" class="btn btn-outline-primary d-block">
+                    <i class="fa-solid fa-angles-left me-2"></i>Close
+                </a>
+            </div>
+        </div>
+    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -24,6 +24,18 @@ namespace MovieRental.DAL
                 opt.SignIn.RequireConfirmedAccount = false;
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<MovieRentalDbContext>();
 
+            services.ConfigureApplicationCookie(opt =>
+            {
+                opt.AccessDeniedPath = "/auth/AccessDenied";
+                opt.LogoutPath = "/auth/logout";
+                opt.LoginPath = "/auth/Login";
+
+                opt.Cookie.Name = "IdentityCookie";
+                opt.ExpireTimeSpan = TimeSpan.FromDays(1);
+
+                opt.SlidingExpiration = true;
+            });
+
             return services;
         }
     }

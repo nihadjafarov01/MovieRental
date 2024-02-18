@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieRental.Business.Services.Interfaces;
 
 namespace MovieRental.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         readonly IMovieService _movieService;

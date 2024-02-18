@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MovieRental.Business.Repositories.Interfaces;
 using MovieRental.Business.Services.Interfaces;
+using MovieRental.Business.ViewModels.AdminVMs.CommentVMs;
 using MovieRental.Business.ViewModels.CommentVMs;
 using MovieRental.Core.Models;
 
@@ -16,6 +17,13 @@ namespace MovieRental.Business.Services.Implements
             _commentRepository = commentRepository;
             _mapper = mapper;
             _userService = userService;
+        }
+
+        public IEnumerable<AdminCommentListItemVM> AdminGetAll()
+        {
+            var models = _commentRepository.GetAll(true, "User");
+            var vms = _mapper.Map<IEnumerable<AdminCommentListItemVM>>(models);
+            return vms;
         }
 
         public async Task CreateAsync(CommentCreateVM vm)

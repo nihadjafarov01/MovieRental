@@ -29,28 +29,15 @@ namespace MovieRental.Business.Services.Implements
         public async Task DeleteAsync(int id)
         {
             await _repo.RemoveAsync(id);
+            await _repo.SaveAsync();
         }
 
         public IEnumerable<MovieListItemVM> GetAll()
         {
-            var data = _repo.GetAll();
+            var data = _repo.GetAll(true, "Reviews");
             var rdata = _mapper.Map<IEnumerable<MovieListItemVM>>(data);
             return rdata;
         }
-
-        //public async Task<MovieUpdateVM> UpdateAsync(int id)
-        //{
-        //    var model = await _repo.GetByIdAsync(id);
-        //    var vm = _mapper.Map<MovieUpdateVM>(model);
-        //    return vm;
-        //}
-
-        //public async Task UpdateAsync(int id, MovieUpdateVM vm)
-        //{
-        //    var model = await _repo.GetByIdAsync(id);
-        //    var rmodel = _mapper.Map(vm, model);
-        //    _repo.Update(model);
-        //}
 
         public async Task<MovieListItemVM> GetByIdAsync(int id)
         {
@@ -69,12 +56,6 @@ namespace MovieRental.Business.Services.Implements
             return rdata;
         }
 
-        public async Task UpdateAsync(MovieUpdateVM vm)
-        {
-            var model = _mapper.Map<Movie>(vm);
-            _repo.Update(model);
-            await _repo.SaveAsync();
-        }
         public async Task AddWantToWatch(int movieId)
         {
             var movie = await _repo.GetByIdAsync(movieId, false, "WatchListMovies");
@@ -106,6 +87,20 @@ namespace MovieRental.Business.Services.Implements
             var watchListMovie = movie.WatchListMovies.SingleOrDefault(w => w.IsWatched == true && w.WatchListId == user.WatchList.Id);
             var result = movie.WatchListMovies.Remove(watchListMovie);
             await _repo.SaveAsync();
+        }
+
+        public async Task UpdateAsync(int id, MovieUpdateVM vm)
+        {
+            var model = await _repo.GetByIdAsync(id, false);
+            _mapper.Map(vm, model);
+            await _repo.SaveAsync();
+        }
+
+        public async Task<MovieUpdateVM> UpdateAsync(int id)
+        {
+            var model = await _repo.GetByIdAsync(id);
+            var vm = _mapper.Map<MovieUpdateVM>(model);
+            return vm;
         }
     }
 }

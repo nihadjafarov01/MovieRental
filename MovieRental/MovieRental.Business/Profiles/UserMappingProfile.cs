@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Execution;
+using MovieRental.Areas.Admin.ViewModels.UserVMs;
 using MovieRental.Business.Helpers;
 using MovieRental.Business.ViewModels.UserVMs;
 using MovieRental.Core.Models;
@@ -13,6 +14,7 @@ namespace MovieRental.Business.Profiles
             CreateMap<AppUser,UserVM>();
             CreateMap<AppUser,MyProfileVM>();
             CreateMap<AppUser,UserProfileVM>();
+            CreateMap<AppUser,UserListItemVM>();
 
             CreateMap<MyProfileUpdateVM, AppUser>()
                 .ForMember(m => m.ProfileImageUrl, opt => opt.Ignore())

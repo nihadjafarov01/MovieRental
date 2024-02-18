@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MovieRental.Areas.Admin.ViewModels.UserVMs;
 using MovieRental.Business.Helpers;
 using MovieRental.Business.Services.Interfaces;
 using MovieRental.Business.ViewModels.UserVMs;
@@ -98,6 +99,13 @@ namespace MovieRental.Business.Services.Implements
             var user = await GetCurrentUserAsync();
             user.ProfileImageUrl = null;
             await _context.SaveChangesAsync();
+        }
+
+        public IEnumerable<UserListItemVM> AdminGetAll()
+        {
+            var users = _context.Users.Include(u => u.Reviews).Include(u => u.Comments).Include(u => u.Posts).Include(u => u.WatchList).ThenInclude(u => u.WatchListMovies).ThenInclude(u => u.Movie).ToList();
+            var vms = _mapper.Map<IEnumerable<UserListItemVM>>(users);
+            return vms;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieRental.Business.Repositories.Interfaces;
 using MovieRental.Business.Services.Interfaces;
@@ -9,6 +10,7 @@ using System.Xml.Linq;
 
 namespace MovieRental.Controllers
 {
+    [Authorize]
     public class MovieController : Controller
     {
         readonly IMovieService _movieService;

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MovieRental.Business.Repositories.Interfaces;
 using MovieRental.Business.Services.Interfaces;
+using MovieRental.Business.ViewModels.AdminVMs.PostVMs;
 using MovieRental.Business.ViewModels.PostVMs;
 using MovieRental.Core.Models;
 
@@ -17,6 +18,13 @@ namespace MovieRental.Business.Services.Implements
             _mapper = mapper;
             _repository = repository;
             _userService = userService;
+        }
+
+        public IEnumerable<AdminPostListItemVM> AdminGetAll()
+        {
+            var models = _repository.GetAll(true, "Tag", "User", "Comments", "Movie");
+            var vms = _mapper.Map<IEnumerable<AdminPostListItemVM>>(models);
+            return vms;
         }
 
         public async Task CreateAsync(PostCreateVM vm)

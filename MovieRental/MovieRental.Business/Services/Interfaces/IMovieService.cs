@@ -12,7 +12,8 @@ namespace MovieRental.Business.Services.Interfaces
         //public Task UpdateAsync(int id, MovieUpdateVM vm);
         public Task DeleteAsync(int id);
         public MovieAdminVM GetMovieAdminVM();
-        public Task UpdateAsync(MovieUpdateVM vm);
+        public Task UpdateAsync(int id, MovieUpdateVM vm);
+        public Task<MovieUpdateVM> UpdateAsync(int id);
         public Task AddWantToWatch(int movieId);
         public Task RemoveWantToWatch(int movieId);
         public Task AddWatched(int movieId);

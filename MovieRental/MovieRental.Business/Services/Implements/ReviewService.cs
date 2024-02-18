@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MovieRental.Business.Repositories.Interfaces;
 using MovieRental.Business.Services.Interfaces;
+using MovieRental.Business.ViewModels.AdminVMs.ReviewVMs;
 using MovieRental.Business.ViewModels.ReviewVMs;
 using MovieRental.Core.Models;
 
@@ -16,6 +17,13 @@ namespace MovieRental.Business.Services.Implements
             _repo = repo;
             _mapper = mapper;
             _userService = userService;
+        }
+
+        public IEnumerable<ReviewListItemVM> AdminGetAll()
+        {
+            var models = _repo.GetAll(true, "User", "Movie");
+            var vms = _mapper.Map<IEnumerable<ReviewListItemVM>>(models);
+            return vms;
         }
 
         public async Task CreateReviewAsync(MovieReviewCreateVM vm)

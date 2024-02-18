@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieRental.Business.Services.Interfaces;
 using MovieRental.Business.ViewModels.AuthVMs;
 
