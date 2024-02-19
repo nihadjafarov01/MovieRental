@@ -22,9 +22,9 @@ namespace MovieRental.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            var datas = _movieService.GetAll().Take(5);
-            int totalCount = _movieService.GetAll().Count();
-            PaginationVM<IEnumerable<MovieListItemVM>> pag = new(totalCount, 1, (int)Math.Ceiling((decimal)totalCount / 5), datas); 
+            var datas = _movieService.AdminGetAll().Take(5);
+            int totalCount = _movieService.AdminGetAll().Count();
+            PaginationVM<IEnumerable<AdminMovieListItemVM>> pag = new(totalCount, 1, (int)Math.Ceiling((decimal)totalCount / 5), datas); 
             return View(pag);
         }
         public async Task<IActionResult> Create()
@@ -56,9 +56,9 @@ namespace MovieRental.Areas.Admin.Controllers
         }
         public async Task<IActionResult> MoviePagination(int page = 1, int count = 5)
         {
-            var datas = _movieService.GetAll().Skip((page - 1) * count).Take(count);
-            int totalCount = _movieService.GetAll().Count();
-            PaginationVM<IEnumerable<MovieListItemVM>> pag = new(totalCount, page, (int)Math.Ceiling((decimal)totalCount / count), datas);
+            var datas = _movieService.AdminGetAll().Skip((page - 1) * count).Take(count);
+            int totalCount = _movieService.AdminGetAll().Count();
+            PaginationVM<IEnumerable<AdminMovieListItemVM>> pag = new(totalCount, page, (int)Math.Ceiling((decimal)totalCount / count), datas);
             return PartialView("_MoviePaginationPartialView", pag);
         }
     }

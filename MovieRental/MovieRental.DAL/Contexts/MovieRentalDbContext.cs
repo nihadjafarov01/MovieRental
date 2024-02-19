@@ -18,6 +18,7 @@ namespace MovieRental.DAL.Contexts
         public DbSet<Comment> Comments { get; set; }
         public DbSet<WatchList> WatchLists { get; set; }
         public DbSet<WatchListMovie> WatchListMovies { get; set; }
+        public DbSet<Slider> Sliders { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -130,6 +131,12 @@ namespace MovieRental.DAL.Contexts
 
                 wm.HasOne(wm => wm.WatchList)
                     .WithMany(w => w.WatchListMovies);
+            });
+
+            builder.Entity<Slider>(s =>
+            {
+                s.HasOne(s => s.Movie)
+                    .WithOne(m => m.Slider);
             });
 
             base.OnModelCreating(builder);

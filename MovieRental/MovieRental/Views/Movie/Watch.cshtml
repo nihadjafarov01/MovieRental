@@ -150,17 +150,23 @@
             let title = data.Title;
             let description = data.Plot;
             let imdbRating = data.Ratings[0].Value;
-
+            let genre = data.Genre;
+            let runtime = data.Runtime;
+            let released = data.Released;
 
             let movieName = document.getElementById('movie-name');
             let movieDes = document.getElementById('movie-des');
             let movieImdbRating = document.getElementById('movie-imdbRating');
-
-            console.log(movieName);
+            let movieGenre = document.getElementById('movie-genre');
+            let movieRuntime = document.getElementById('movie-runtime');
+            let movieReleased = document.getElementById('movie-released');
 
             movieName.textContent = title;
             movieDes.textContent = description;
             movieImdbRating.textContent = imdbRating;
+            movieGenre.textContent = genre;
+            movieRuntime.textContent = runtime;
+            movieReleased.textContent = released;
         })
         .catch(error => console.error('Error fetching data:', error));
 </script>
@@ -210,14 +216,11 @@
                                 </div>
                                     </div>
                                     <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-tag">
-                                        <li class="trending-list"><a class="text-primary" href="./view-all-movie.html">Action</a></li>
-                                        <li class="trending-list"><a class="text-primary" href="./view-all-movie.html">Adventure</a></li>
-                                        <li class="trending-list"><a class="text-primary" href="./view-all-movie.html">Drama</a></li>
+                            <li class="ms-3 trending-list"><a class="text-primary" id="movie-genre">Action</a></li>
                                     </ul>
                                     <div class="d-flex flex-wrap align-items-center text-white text-detail flex-wrap mb-4">
-                                        <span class="badge bg-secondary">Horror</span>
-                                        <span class="ms-3 font-Weight-500 genres-info">1hr : 48mins</span>
-                                        <span class="trending-year trending-year-list font-Weight-500 genres-info">
+                                        <span id="movie-runtime" class="font-Weight-500 genres-info">1hr : 48mins</span>
+                            <span id="movie-released" class="ms-4 trending-year trending-year-list font-Weight-500 genres-info">
                           Feb 2017
                         </span>
                                     </div>
@@ -303,11 +306,6 @@
                                 <li class="nav-item">
                                     <a class="nav-link" data-bs-toggle="pill" href="#review-01" role="tab" aria-selected="false">
                         Rate &amp; Review
-                      </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="pill" href="#source-01" role="tab" aria-selected="false">
-                        Sources
                       </a>
                                 </li>
                             </ul>

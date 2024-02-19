@@ -2,8 +2,7 @@
 {
     public class MovieUpdateVM
     {
-        public int Id { get; set; }
         public string ImdbId { get; set; }
-
+        public string TrailerUrl { get; set; }
     }
 }

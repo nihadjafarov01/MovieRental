@@ -45,17 +45,6 @@ namespace MovieRental.Business.Services.Implements
             var vm = _mapper.Map<MovieListItemVM>(model);
             return vm;
         }
-        public MovieAdminVM GetMovieAdminVM()
-        {
-            var data = _repo.GetAll();
-            var adminMovieListItems = _mapper.Map<IEnumerable<AdminMovieListItemVM>>(data);
-            MovieAdminVM rdata = new MovieAdminVM
-            {
-                MovieListItemVMs = adminMovieListItems
-            };
-            return rdata;
-        }
-
         public async Task AddWantToWatch(int movieId)
         {
             var movie = await _repo.GetByIdAsync(movieId, false, "WatchListMovies");
@@ -101,6 +90,13 @@ namespace MovieRental.Business.Services.Implements
             var model = await _repo.GetByIdAsync(id);
             var vm = _mapper.Map<MovieUpdateVM>(model);
             return vm;
+        }
+
+        public IEnumerable<AdminMovieListItemVM> AdminGetAll()
+        {
+            var models = _repo.GetAll();
+            var vms = _mapper.Map<IEnumerable<AdminMovieListItemVM>>(models);
+            return vms;
         }
     }
 }

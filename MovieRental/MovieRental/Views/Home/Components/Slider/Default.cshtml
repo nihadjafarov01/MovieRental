@@ -1,0 +1,131 @@
+﻿@model IEnumerable<SliderListItemVM>
+<section class="banner-container">
+    <div class="movie-banner">
+        <div class="swiper swiper-banner-container" data-swiper="banner-detail-slider">
+            <div class="swiper-wrapper">
+                @foreach(var item in Model)
+                {
+                <div class="swiper-slide movie-banner-1 p-0">
+                    <div class="movie-banner-image">
+                        <img src="@item.ImageUrl" alt="movie-banner-image">
+                    </div>
+                    <div class="shows-content h-100">
+                        <div class="row align-items-center h-100">
+                            <div class="col-lg-7 col-md-12">
+                                    <h1 class="slider-movie-title-@item.Id texture-text big-font letter-spacing-1 line-count-1 text-uppercase RightAnimate-two"
+                                    data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                    John Wick
+                                </h1>
+                                <div class="flex-wrap align-items-center fadeInLeft animated" data-animation-in="fadeInLeft"
+                                     style="opacity: 1;">
+                                    <div class="slider-ratting d-flex align-items-center gap-3">
+                                            <ul class="ratting-start p-0 m-0 list-inline text-warning d-flex align-items-center justify-content-left">
+
+                                                <img height="20" width="20" src="~/assets/images/imdbLogo.png">
+                                                <span class="slider-movie-rating-@item.Id text-white ms-2">4.8 (imdb)</span>
+                                            </ul>
+
+                                    </div>
+                                    <div class="d-flex flex-wrap align-items-center gap-3 movie-banner-time">
+                                        <span class="badge bg-secondary p-2">
+                                            <i class="fa fa-eye"></i>
+                                            PG
+                                        </span>
+                                        <span class="font-size-6">
+                                            <i class="fa-solid fa-circle"></i>
+                                        </span>
+                                            <span class="slider-movie-runtime-@item.Id trending-time font-normal">
+                                            1hr : 44mins
+                                        </span>
+                                        <span class="font-size-6">
+                                            <i class="fa-solid fa-circle"></i>
+                                        </span>
+                                            <span class="slider-movie-released-@item.Id trending-year font-normal">
+                                            Feb 2018
+                                        </span>
+                                    </div>
+                                        <p class="slider-movie-description-@item.Id movie-banner-text line-count-3" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                        Dinosaurs are a diverse group of reptiles of the clade Dinosauria. They first appeared during the Triassic period, between 243 and 233.23 million years ago, although the exact origin and timing of the evolution of dinosaurs is the subject of active research.
+                                    </p>
+                                </div>
+                                <div class="iq-button" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                    <a asp-action="Watch" asp-controller="Movie" asp-route-id="@item.MovieId" class="btn text-uppercase position-relative">
+                                        <span class="button-text">Play Now</span>
+                                        <i class="fa-solid fa-play"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-12 trailor-video iq-slider d-none d-lg-block position-relative">
+                                    <a href="@item.Movie.TrailerUrl" target="_blank" class="video-open playbtn text-decoration-none" tabindex="0">
+                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                                         y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7"
+                                         xml:space="preserve">
+                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"
+                                             stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 "></polygon>
+                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3"></circle>
+                      </svg>
+                                    <span class="w-trailor text-uppercase"> Watch Trailer </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <script>
+
+                        sliderApiUrl = 'https://www.omdbapi.com/?apikey=137fe9c1&i=@item.Movie.ImdbId';
+
+                        fetch(sliderApiUrl)
+                            .then(response => response.json())
+                            .then(data => {
+
+                                let sliderTitle = data.Title;
+                                let sliderDescription = data.Plot;
+                                let sliderRating = data.Ratings[0].Value;
+                                let sliderRuntime = data.Runtime;
+                                let sliderReleased = data.Released;
+
+                                sliderMovieTitles = document.getElementsByClassName('slider-movie-title-@item.Id');
+                                sliderMovieDescriptions = document.getElementsByClassName('slider-movie-description-@item.Id');
+                                sliderMovieRatings = document.getElementsByClassName('slider-movie-rating-@item.Id');
+                                sliderMovieRuntimes = document.getElementsByClassName('slider-movie-runtime-@item.Id');
+                                sliderMovieReleaseds = document.getElementsByClassName('slider-movie-released-@item.Id');
+
+                                for (let i = 0; i < sliderMovieTitles.length; i++) {
+                                    let sliderMovieTitle = sliderMovieTitles[i];
+                                    let sliderMovieDescription = sliderMovieDescriptions[i];
+                                    let sliderMovieRating = sliderMovieRatings[i];
+                                    let sliderMovieRuntime = sliderMovieRuntimes[i];
+                                    let sliderMovieReleased = sliderMovieReleaseds[i];
+
+                                    sliderMovieTitle.textContent = sliderTitle;
+                                    sliderMovieDescription.textContent = sliderDescription;
+                                    sliderMovieRating.textContent = sliderRating;
+                                    sliderMovieRuntime.textContent = sliderRuntime;
+                                    sliderMovieReleased.textContent = sliderReleased;
+                                }
+                            })
+                            .catch(error => console.error('Error fetching data:', error));
+                    </script>
+
+                }
+                <script>
+
+                    let sliderApiUrl = 'https://www.omdbapi.com/?apikey=137fe9c1&i=item.ImdbId'; // Assuming ImdbId is the property containing the IMDb ID of the movie
+                    let sliderMovieTitles;
+                    let sliderMovieDescriptions;
+                    let sliderMovieRatings;
+                    let sliderMovieRuntimes;
+                    let sliderMovieReleaseds;
+                </script>
+
+            </div>
+            <div class="swiper-banner-button-next">
+                <i class="iconly-Arrow-Right-2 icli arrow-icon"></i>
+            </div>
+            <div class="swiper-banner-button-prev">
+                <i class="iconly-Arrow-Left-2 icli arrow-icon"></i>
+            </div>
+        </div>
+    </div>
+</section>

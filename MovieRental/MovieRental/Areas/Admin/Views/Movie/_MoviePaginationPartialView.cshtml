@@ -1,6 +1,4 @@
-﻿@using MovieRental.Business.ViewModels.CommonVMs
-@using MovieRental.Business.ViewModels.MovieVMs
-@model PaginationVM<IEnumerable<MovieListItemVM>>
+﻿@model PaginationVM<IEnumerable<AdminMovieListItemVM>>
 
 
     <div class="card-body">
@@ -29,6 +27,7 @@
                         <th>Imdb Rating</th>
                         <th>Local Rating</th>
                         <th>Review count</th>
+                        <th>Trailer</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -65,6 +64,9 @@
                                 </td>
                                 <td>
                                     @item.Reviews.Count()
+                                </td>
+                                <td>
+                                    @item.TrailerUrl
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center list-user-action">

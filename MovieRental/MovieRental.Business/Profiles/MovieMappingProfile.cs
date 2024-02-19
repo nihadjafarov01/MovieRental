@@ -15,7 +15,6 @@ namespace MovieRental.Business.Profiles
             CreateMap<MovieCreateVM, Movie>();
             CreateMap<MovieUpdateVM, Movie>();
             CreateMap<Movie, MovieUpdateVM>();
-            CreateMap<MovieAdminVM, AdminMovieListItemVM>();
         }
     }
 }

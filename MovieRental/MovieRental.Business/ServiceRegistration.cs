@@ -18,6 +18,7 @@ namespace MovieRental.Business
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IWatchListRepository, WatchListRepository>();
             services.AddScoped<IWatchListMovieRepository, WatchListMovieRepository>();
+            services.AddScoped<ISliderRepository, SliderRepository>();
 
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IAuthService, AuthService>();
@@ -29,6 +30,7 @@ namespace MovieRental.Business
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IWatchListService, WatchListService>();
             services.AddScoped<IWatchListMovieService, WatchListMovieService>();
+            services.AddScoped<ISliderService, SliderService>();
 
             services.AddAutoMapper(opt =>
             {
