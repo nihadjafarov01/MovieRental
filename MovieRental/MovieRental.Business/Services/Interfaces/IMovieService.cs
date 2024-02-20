@@ -16,5 +16,7 @@ namespace MovieRental.Business.Services.Interfaces
         public Task RemoveWantToWatch(int movieId);
         public Task AddWatched(int movieId);
         public Task RemoveWatched(int movieId);
+        public IEnumerable<MovieListItemVM> GetPopularMovies();
+        public IEnumerable<MovieListItemVM> GetRatingMovies();
     }
 }

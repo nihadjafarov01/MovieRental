@@ -32,17 +32,44 @@ namespace MovieRental.Business.Services.Implements
             await _repo.SaveAsync();
         }
 
+        public IEnumerable<MovieListItemVM> GetRatingMovies()
+        {
+            var data = _repo.GetAll(true, "Reviews");
+            var rdata = _mapper.Map<IEnumerable<MovieListItemVM>>(data);
+            foreach (var item in rdata)
+            {
+                if (item.Reviews.Any())
+                {
+                    item.LocalRating = (float)item.Reviews.Average(r => r.RatingValue);
+                }
+                else
+                {
+                    item.LocalRating = 0;
+                }
+            }
+            rdata = rdata.OrderByDescending(m => m.LocalRating);
+            return rdata;
+        }
         public IEnumerable<MovieListItemVM> GetAll()
         {
             var data = _repo.GetAll(true, "Reviews");
             var rdata = _mapper.Map<IEnumerable<MovieListItemVM>>(data);
             return rdata;
         }
-
         public async Task<MovieListItemVM> GetByIdAsync(int id)
         {
-            var model = await _repo.GetByIdAsync(id, false, "Reviews", "WatchListMovies");
+            var model = await _repo.GetByIdAsync(id, false, "Reviews");
             var vm = _mapper.Map<MovieListItemVM>(model);
+            var user = await _userService.GetCurrentUserAsync();
+            //if (vm.Reviews.Any())
+            //{
+            //    vm.LocalRating = (float)vm.Reviews.Average(r => r.RatingValue);
+            //}
+            //else
+            //{
+            //    vm.LocalRating = 0;
+            //}
+            vm.WatchListMovies = user.WatchList.WatchListMovies.Where(m => m.Movie.Id == id).ToList();
             return vm;
         }
         public async Task AddWantToWatch(int movieId)
@@ -97,6 +124,25 @@ namespace MovieRental.Business.Services.Implements
             var models = _repo.GetAll();
             var vms = _mapper.Map<IEnumerable<AdminMovieListItemVM>>(models);
             return vms;
+        }
+
+        public IEnumerable<MovieListItemVM> GetPopularMovies()
+        {
+            var data = _repo.GetAll(true, "Reviews", "WatchListMovies");
+            var rdata = _mapper.Map<IEnumerable<MovieListItemVM>>(data);
+            foreach (var item in rdata)
+            {
+                if (item.Reviews.Any())
+                {
+                    item.LocalRating = (float)item.Reviews.Average(r => r.RatingValue);
+                }
+                else
+                {
+                    item.LocalRating = 0;
+                }
+            }
+            rdata = rdata.OrderByDescending(m => m.WatchListMovies.Count());
+            return rdata;
         }
     }
 }
