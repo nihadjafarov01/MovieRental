@@ -1,0 +1,82 @@
+﻿@model IEnumerable<MovieListItemVM>
+<style>
+    
+    .gap-4 {
+        margin: 10px;
+        border-color: #3a3a3a;
+        border-width: thin;
+        border-style: solid;
+    }
+
+</style>
+<ul class="list-inline p-0 m-0">
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        var item = Model.ElementAt(i);
+        <li class="d-flex align-items-center gap-4">
+            <div>
+                <a asp-action="Watch" asp-controller="Movie" asp-route-id="@item.Id">
+                    <img id="movie-image-@item.Id" src="../assets/images/blog/01.webp" style="height:100px;">
+                </a>
+            </div>
+            <div class="post-blog">
+                <a class="new-link" asp-action="Watch" asp-controller="Movie" asp-route-id="@item.Id">
+                    <h6 id="movie-name-@item.Id" class="post-title">The Most Anticipated Movies</h6>
+                </a>
+                <ul class="list-inline mb-2">
+                    <li class="list-inline-item border-0 mb-0 pb-0">
+                        <a id="movie-released-@item.Id" asp-action="Watch" asp-controller="Movie" asp-route-id="@item.Id" class="blog-data">
+                            <i class="far fa-calendar-alt me-1" aria-hidden="true"></i>September 23, 2022
+                        </a>
+                    </li>
+                </ul>
+                <div class="slider-ratting d-flex align-items-center">
+                    <ul class="ratting-start p-0 m-0 list-inline text-warning d-flex align-items-center justify-content-left">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <span class="ms-1 text-white">@item.LocalRating</span>
+                    </ul>
+                    <a href="https://www.imdb.com/title/@item.ImdbId" class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
+                        <ul class="ratting-start p-0 m-0 list-inline text-warning d-flex align-items-center justify-content-left">
+
+                            <img height="17" width="17" src="~/assets/images/imdbLogo.png">
+                            <span id="movie-imdbRating-@item.Id" class="text-white ms-2">4.8 (imdb)</span>
+                        </ul>
+                    </a>
+                </div>
+
+            </div>
+        </li>
+        <script>
+            // Fetch data from the OMDB API
+            apiUrl = 'https://www.omdbapi.com/?apikey=137fe9c1&i=@item.ImdbId';
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+
+                    let title = data.Title;
+                    let image = data.Poster;
+                    let imdbRating = data.Ratings[0].Value;
+                    let genre = data.Genre;
+                    let runtime = data.Runtime;
+                    let released = data.Released;
+
+                    let movieTitle = `@(i+1). ${title}`;
+
+                    let movieName = document.getElementById('movie-name-@item.Id');
+                    let movieImage = document.getElementById('movie-image-@item.Id');
+                    let movieImdbRating = document.getElementById('movie-imdbRating-@item.Id');
+                    let movieGenre = document.getElementById('movie-genre-@item.Id');
+                    let movieRuntime = document.getElementById('movie-runtime-@item.Id');
+                    let movieReleased = document.getElementById('movie-released-@item.Id');
+
+                    movieName.textContent = movieTitle;
+                    movieImage.src = image;
+                    movieReleased.textContent = released;
+                    movieImdbRating.textContent = imdbRating;
+                    })
+                .catch(error => console.error('Error fetching data:', error));
+        </script>
+    }
+    
+</ul>

@@ -15,18 +15,23 @@ namespace MovieRental.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<MovieListItemVM> vms = _movieService.GetPopularMovies();
+            IEnumerable<MovieListItemVM> vms = _movieService.GetRatingMovies(true);
             return View(vms);
         }
-        public IActionResult PopularMovies()
+        public IActionResult PopularMovies(bool des)
         {
-            IEnumerable<MovieListItemVM> vms = _movieService.GetPopularMovies();
-            return RedirectToAction("Index", vms);
+            IEnumerable<MovieListItemVM> vms = _movieService.GetPopularMovies(des);
+            return PartialView("_MoviesPartialView", vms);
         }
-        //public IActionResult ReleasedMovies()
-        //{
-        //    IEnumerable<MovieListItemVM> vms = _movieService.GetReleasedMovies();
-        //    return View(vms);
-        //}
+        public IActionResult RankingMovies(bool des)
+        {
+            IEnumerable<MovieListItemVM> vms = _movieService.GetRatingMovies(des);
+            return PartialView("_MoviesPartialView", vms);
+        }
+        public IActionResult ReleasedMovies()
+        {
+            IEnumerable<MovieListItemVM> vms = _movieService.GetPopularMovies(true);
+            return PartialView("_MoviesPartialView", vms);
+        }
     }
 }

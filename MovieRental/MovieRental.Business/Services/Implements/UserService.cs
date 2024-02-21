@@ -37,16 +37,16 @@ namespace MovieRental.Business.Services.Implements
 
         public async Task<MyProfileVM> GetMyProfileAsync()
         {
-            string username = _httpContext.HttpContext.User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await GetCurrentUserAsync();
             var ruser = _mapper.Map<MyProfileVM>(user);
+            ruser.MyProfileUpdateVM = new MyProfileUpdateVM { IsPublic = ruser.IsPublic };
             return ruser;
         }
 
         public async Task<UserVM> GetUserVMAsync()
         {
             string username = _httpContext.HttpContext.User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await GetCurrentUserAsync();
             var vm = _mapper.Map<UserVM>(user);
             return vm;
         }
@@ -108,34 +108,6 @@ namespace MovieRental.Business.Services.Implements
             return vms;
         }
 
-        public async Task RemoveWantToWatch(int movieId)
-        {
-            var user = await GetCurrentUserAsync();
-            var movie = user.WatchList.WatchListMovies.Where(m => m.MovieId == movieId && m.IsWatched == false).SingleOrDefault();
-            user.WatchList.WatchListMovies.Remove(movie);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task AddWantToWatch(int movieId)
-        {
-            var user = await GetCurrentUserAsync();
-            user.WatchList.WatchListMovies.Add(new WatchListMovie { MovieId = movieId , IsWatched = false});
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task AddWatched(int movieId)
-        {
-            var user = await GetCurrentUserAsync();
-            user.WatchList.WatchListMovies.Add(new WatchListMovie { MovieId = movieId, IsWatched = true });
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task RemoveWatched(int movieId)
-        {
-            var user = await GetCurrentUserAsync();
-            var movie = user.WatchList.WatchListMovies.Where(m => m.MovieId == movieId && m.IsWatched == true).SingleOrDefault();
-            user.WatchList.WatchListMovies.Remove(movie);
-            await _context.SaveChangesAsync();
-        }
+        
     }
 }

@@ -18,9 +18,6 @@ namespace MovieRental.Business.Services.Interfaces
         public Task ChangeVisibility(MyProfileUpdateVM vm);
         public Task ChangeProfileImage(MyProfileUpdateVM vm, string rootPath);
         public Task RemoveProfileImage();
-        public Task AddWantToWatch(int movieId);
-        public Task RemoveWantToWatch(int movieId);
-        public Task AddWatched(int movieId);
-        public Task RemoveWatched(int movieId);
+        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MovieRental.Business.Services.Interfaces;
 using MovieRental.Business.ViewModels.AdminVMs.MovieVMs;
 using MovieRental.Business.ViewModels.MovieVMs;
@@ -32,7 +33,7 @@ namespace MovieRental.Business.Services.Implements
             await _repo.SaveAsync();
         }
 
-        public IEnumerable<MovieListItemVM> GetRatingMovies()
+        public IEnumerable<MovieListItemVM> GetRatingMovies(bool des)
         {
             var data = _repo.GetAll(true, "Reviews");
             var rdata = _mapper.Map<IEnumerable<MovieListItemVM>>(data);
@@ -47,7 +48,15 @@ namespace MovieRental.Business.Services.Implements
                     item.LocalRating = 0;
                 }
             }
-            rdata = rdata.OrderByDescending(m => m.LocalRating);
+            if (des)
+            {
+                rdata = rdata.OrderByDescending(m => m.LocalRating);
+            }
+            else
+            {
+                rdata = rdata.OrderBy(m => m.LocalRating);
+            }
+            rdata = rdata.Take(100);
             return rdata;
         }
         public IEnumerable<MovieListItemVM> GetAll()
@@ -126,7 +135,7 @@ namespace MovieRental.Business.Services.Implements
             return vms;
         }
 
-        public IEnumerable<MovieListItemVM> GetPopularMovies()
+        public IEnumerable<MovieListItemVM> GetPopularMovies(bool des)
         {
             var data = _repo.GetAll(true, "Reviews", "WatchListMovies");
             var rdata = _mapper.Map<IEnumerable<MovieListItemVM>>(data);
@@ -141,7 +150,31 @@ namespace MovieRental.Business.Services.Implements
                     item.LocalRating = 0;
                 }
             }
-            rdata = rdata.OrderByDescending(m => m.WatchListMovies.Count());
+            if (des)
+            {
+                rdata = rdata.OrderByDescending(m => m.WatchListMovies.Count());
+            }
+            else
+            {
+                rdata = rdata.OrderBy(m => m.WatchListMovies.Count());
+            }
+            rdata = rdata.Take(100);
+            return rdata;
+        }
+
+        public IEnumerable<MovieListItemVM> GetLatestMovies(bool des)
+        {
+            var data = _repo.GetAll();
+            var rdata = _mapper.Map<IEnumerable<MovieListItemVM>>(data);
+            if (des)
+            {
+                rdata = rdata.OrderByDescending(m => m.CreatedTime);
+            }
+            else
+            {
+                rdata = rdata.OrderBy(m => m.CreatedTime);
+            }
+            rdata = rdata.Take(100);
             return rdata;
         }
     }

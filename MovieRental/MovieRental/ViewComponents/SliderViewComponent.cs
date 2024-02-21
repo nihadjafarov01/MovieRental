@@ -15,6 +15,7 @@ namespace MovieRental.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var models = _sliderService.GetAll();
+            models = models.TakeLast(5);
             return View(models);
         }
     }

@@ -1,140 +1,114 @@
 ﻿@model IEnumerable<MovieListItemVM>
+@section scripts {
+    <script>
+        function handleSortedValue(selectedValue) {
+            var action = `${selectedValue}-action`;
+
+            var currentHref = $(`#${action}`).attr("href");
+            var newDesValue = currentHref.includes("des=True") ? "False" : "True";
+            var newHref = currentHref.replace(/des=[^&]*/, "des=" + newDesValue);
+
+            $(`#${action}`).attr("href", newHref);
+
+            fetch(newHref)
+                .then(res => res.text())
+                .then(data => $("#featured").html(data));
+        }
+        function handleSelectedValue(selectedValue) {
+            var action = `${selectedValue}-action`;
+
+            var currentHref = $(`#${action}`).attr("href");
+            var newHref = currentHref.replace(/des=[^&]*/, "des=" + "True");
+
+            $(`#${action}`).attr("href", newHref);
+
+            fetch(newHref)
+                .then(res => res.text())
+                .then(data => $("#featured").html(data));
+        }
+
+        var selectElement = document.getElementById("choices-single-default");
+        selectElement.addEventListener("change", function () {
+            var selectedValue = this.value;
+
+            handleSelectedValue(selectedValue);
+        });
+
+        $("#toggleDesButton").on("click", function () {
+            var selectedValue = selectElement.value;
+
+            if (selectedValue) {
+                handleSortedValue(selectedValue);
+            }
+        });
+    </script>
+
+    <script>
+        let apiUrl = 'https://www.omdbapi.com/?apikey=137fe9c1&i=';
+    </script>
+}
+
 
 <style>
-    .movies-container{
-    margin-bottom: 1em;
-    padding-bottom: 1em;
-    border-bottom: none;
-    background-color: var(--bs-gray-900);
-    margin-right: 10%;
-    margin-left: 10%;
+    .movies-container {
+        margin-bottom: 1em;
+        padding-bottom: 1em;
+        border-bottom: none;
+        background-color: var(--bs-gray-900);
+        margin-right: 10%;
+        margin-left: 10%;
     }
 
-    .gap-4{
-        margin : 10px;
-    }
-
-    .movies-head{
+    .movies-head {
         display: flex;
         justify-content: space-between;
         padding: 20px;
     }
-        
-    </style>
+</style>
 
 <div class="container-fluid">
-
+    <a id="PopularMovies-action" asp-action="PopularMovies" asp-route-des="@true"></a>
+    <a id="RankingMovies-action" asp-action="RankingMovies" asp-route-des="@true"></a>
     <div class="movies-container">
         <div class="movies-head">
             <h3 class="widget-title position-relative">Movies</h3>
             <div class="d-flex align-items-center">
-                <select class="form-select" data-trigger="" name="choices-single-default" id="choices-single-default">
-                    <option value="" disabled selected>Sort by</option>
-                    <option selected value="Choice1">Ranking</option>
-                    <option value="Choice2">Popularity</option>
-                    <option value="Choice3">Release date</option>
+                <div style="text-align: center; width: -webkit-fill-available;">
+                    Sort by
+                </div>
+                <select class="form-select ms-2" data-trigger="" name="choices-single-default" id="choices-single-default" style="width: fit-content;">
+                    <option selected value="RankingMovies">Ranking    </option>
+                    <option id="choices-popularity" value="PopularMovies">Popularity   </option>
                 </select>
-
-                <script>
-                    // Add event listener to the select element
-                    var selectElement = document.getElementById("choices-single-default");
-                    selectElement.addEventListener("change", function () {
-                        // Get the selected value
-                        var selectedValue = selectElement.value;
-
-                        // Redirect to the appropriate action based on the selected value
-                        switch (selectedValue) {
-                            case "Choice1":
-                                window.location.href = '@Url.Action("RankingMovies", "Movies")';
-                                break;
-                            case "Choice2":
-                                window.location.href = '@Url.Action("PopularMovies", "Movies")';
-                                break;
-                            case "Choice3":
-                                window.location.href = '@Url.Action("ReleasedMovies", "Movies")';
-                                break;
-                            // Add other cases as needed
-                        }
-                    });
-                </script>
-
+                <button id="toggleDesButton" class="ms-2">
+                    <svg width="30px" height="30px" xmlns="http://www.w3.org/2000/svg" class="ipc-icon ipc-icon--swap-vert" viewBox="0 0 24 24" fill="currentColor" role="presentation"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M16 17.01V11c0-.55-.45-1-1-1s-1 .45-1 1v6.01h-1.79c-.45 0-.67.54-.35.85l2.79 2.78c.2.19.51.19.71 0l2.79-2.78c.32-.31.09-.85-.35-.85H16zM8.65 3.35L5.86 6.14c-.32.31-.1.85.35.85H8V13c0 .55.45 1 1 1s1-.45 1-1V6.99h1.79c.45 0 .67-.54.35-.85L9.35 3.35a.501.501 0 0 0-.7 0z"></path></svg>
+                </button>
             </div>
         </div>
-    <ul class="list-inline p-0 m-0">
-        @foreach(var item in Model)
-        {
-        <li class="d-flex align-items-center gap-4">
-            <div>
-                <a asp-action="Watch" asp-controller="Movie" asp-route-id="@item.Id">
-                    <img id="movie-image-@item.Id" src="../assets/images/blog/01.webp" style="height:100px;">
-                </a>
-            </div>
-            <div class="post-blog">
-                <a class="new-link" asp-action="Watch" asp-controller="Movie" asp-route-id="@item.Id">
-                    <h6 id="movie-name-@item.Id" class="post-title">The Most Anticipated Movies</h6>
-                </a>
-                <ul class="list-inline mb-2">
-                    <li class="list-inline-item border-0 mb-0 pb-0">
-                        <a id="movie-released-@item.Id" asp-action="Watch" asp-controller="Movie" asp-route-id="@item.Id" class="blog-data">
-                            <i class="far fa-calendar-alt me-1" aria-hidden="true"></i>September 23, 2022
-                        </a>
-                    </li>
-                </ul>
-                    <div class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
-                        <ul class="ratting-start p-0 m-0 list-inline text-warning d-flex align-items-center justify-content-left">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <span class="ms-1 text-white">@item.LocalRating</span>
-                        </ul>
-                        <a href="https://www.imdb.com/title/@item.ImdbId" class="slider-ratting d-flex align-items-center ms-lg-3 ms-0">
-                            <ul class="ratting-start p-0 m-0 list-inline text-warning d-flex align-items-center justify-content-left">
+        <div id="featured">
 
-                                <img height="17" width="17" src="~/assets/images/imdbLogo.png">
-                                <span id="movie-imdbRating-@item.Id" class="text-white ms-2">4.8 (imdb)</span>
-                            </ul>
-                        </a>
-                    </div>
+        <partial id="featured" name="_MoviesPartialView" />
 
-            </div>
-        </li>
-<script>
-    // Fetch data from the OMDB API
-    apiUrl = 'https://www.omdbapi.com/?apikey=137fe9c1&i=@item.ImdbId';
-
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-
-            let title = data.Title;
-            let image = data.Poster;
-            let imdbRating = data.Ratings[0].Value;
-            let genre = data.Genre;
-            let runtime = data.Runtime;
-            let released = data.Released;
-
-            let movieName = document.getElementById('movie-name-@item.Id');
-            let movieImage = document.getElementById('movie-image-@item.Id');
-            let movieImdbRating = document.getElementById('movie-imdbRating-@item.Id');
-            let movieGenre = document.getElementById('movie-genre-@item.Id');
-            let movieRuntime = document.getElementById('movie-runtime-@item.Id');
-            let movieReleased = document.getElementById('movie-released-@item.Id');
-
-            movieName.textContent = title;
-            movieImage.src = image;
-            movieReleased.textContent = released; 
-            movieImdbRating.textContent = imdbRating;
-            @* movieGenre.textContent = genre;
-            movieRuntime.textContent = runtime;  *@
-        })
-        .catch(error => console.error('Error fetching data:', error));
-</script>
-        }
-<script>
-    let apiUrl = 'https://www.omdbapi.com/?apikey=137fe9c1&i=';
-</script>
-
-
-    </ul>
+        </div>
     </div>
 </div>
 
             </main>
+
+<style>
+
+    #toggleDesButton {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        outline: none; /* Remove the default focus border */
+    }
+
+    #toggleDesButton svg {
+        fill: #ffffff;
+        height: 30px;
+        width: 30px;
+    }
+
+</style>
