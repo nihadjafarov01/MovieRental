@@ -8,7 +8,7 @@ using MovieRental.Business.ViewModels.CommonVMs;
 
 namespace MovieRental.Areas.Admin.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class CommentController : Controller
     {

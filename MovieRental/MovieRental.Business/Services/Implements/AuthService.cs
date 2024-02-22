@@ -42,8 +42,9 @@ namespace MovieRental.Business.Services.Implements
                 Name = "Admin",
                 Surname = "Admin"
             };
-            await _userManager.CreateAsync(user, "Admin123");
+            var result = await _userManager.CreateAsync(user, "Admin123");
             AppUser user2 = await _userManager.FindByNameAsync("admin123");
+            await _watchListService.CreateAsync(new WatchListCreateVM { UserId = user2.Id });
             await _userManager.AddToRoleAsync(user2, Roles.Admin.ToString());
             return true;
         }
@@ -88,7 +89,7 @@ namespace MovieRental.Business.Services.Implements
                 AppUser user2 = await _userManager.FindByNameAsync(vm.Username);
                 await _watchListService.CreateAsync(new WatchListCreateVM { UserId =  user2.Id});
             }
-            //await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
+            await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
             return result;
         }
     }

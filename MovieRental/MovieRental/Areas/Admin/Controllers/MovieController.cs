@@ -9,7 +9,7 @@ using System.Data;
 
 namespace MovieRental.Areas.Admin.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class MovieController : Controller
     {

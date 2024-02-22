@@ -8,7 +8,7 @@ using MovieRental.Business.ViewModels.MovieVMs;
 
 namespace MovieRental.Areas.Admin.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class UserController : Controller
     {
