@@ -15,7 +15,7 @@ namespace MovieRental.DAL
             services.AddIdentity<AppUser, IdentityRole>(opt =>
             {
                 opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.";
-                opt.User.RequireUniqueEmail = false;
+                opt.User.RequireUniqueEmail = true;
 
                 opt.Password.RequireNonAlphanumeric = false;
 
