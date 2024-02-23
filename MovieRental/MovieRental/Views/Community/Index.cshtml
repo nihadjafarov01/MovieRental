@@ -145,7 +145,14 @@
         // var img = document.createElement("img");
         // document.getElementById("messagesList").appendChild(li);
         // document.getElementById("messagesList").appendChild(img);
-        if (profileImageUrl == null) { profileImageUrl = "@Url.Content("~/assets/images/blankProfilePhoto.png")" }
+        if (profileImageUrl == null) 
+        { 
+            profileImageUrl = "@Url.Content("~/assets/images/blankProfilePhoto.png")" 
+        }
+        else
+        {
+            profileImageUrl = '/images/profile/' + profileImageUrl
+        }
         var messagesList = document.getElementById("messagesList");
         messagesList.innerHTML += `
                 <div class="comments-wrap p-0" style="margin-bottom: 40px; margin-top: 20px;">
@@ -154,7 +161,7 @@
 
                 <div class="slider-ratting d-flex">
     <div class="iq-avatar me-2">
-    <img class="avatar-40 rounded-small" src="${'/images/profile/' + profileImageUrl}" alt="#" data-bs-original-title="" title="">
+    <img class="avatar-40 rounded-small" src="${profileImageUrl}" alt="#" data-bs-original-title="" title="">
                                 </div>
                     <div class="ci-form ms-2" style="width: -webkit-fill-available;">
                         <div class="ihead d-flex align-items-center">

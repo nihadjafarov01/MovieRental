@@ -15,14 +15,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title data-setting="app_name" data-rightJoin=" Responsive Bootstrap 5 Admin Dashboard Template">Streamit Responsive Bootstrap 5 Admin Dashboard Template</title>
+    <title>Shire</title>
     <meta name="description" content="Streamit is a revolutionary Bootstrap Admin Dashboard Template and UI Components Library. The Admin Dashboard Template and UI Component features 8 modules.">
     <meta name="keywords" content="premium, admin, dashboard, template, bootstrap 5, clean ui, streamit, admin dashboard,responsive dashboard, optimized dashboard,">
     <meta name="author" content="Iqonic Design">
     <meta name="DC.title" content="Streamit Responsive Bootstrap 5 Admin Dashboard Template">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="~/admin/assets/images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="~/admin/assets/css/core/libs.min.css">
@@ -69,12 +68,8 @@
         <div class="sidebar-header d-flex align-items-center justify-content-start">
             <a asp-controller="Movie" asp-action="Index" class="navbar-brand">
 
-                <!--Logo start-->
-                <img class="logo-normal" src="~/admin/assets/images/logo.png" alt="#">
-                <img class="logo-normal logo-white" src="~/admin/assets/images/logo-white.png" alt="#">
-                <img class="logo-full" src="~/admin/assets/images/logo-full.png" alt="#">
-                <img class="logo-full logo-full-white" src="~/admin/assets/images/logo-full-white.png" alt="#">
-                <!--logo End-->
+                <img class="logo-full" src="~/assets/images/shire_default.svg" alt="#">
+
             </a>
             <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
                 <i class="chevron-right">
@@ -125,7 +120,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " aria-current="page" asp-action="Index" asp-controller="Post">
+                        <a class="nav-link " asp-action="Index" asp-controller="Post">
                             <i class="icon" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Form" data-bs-original-title="Form">
                                 <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path opacity="0.4" d="M16.191 2H7.81C4.77 2 3 3.78 3 6.83V17.16C3 20.26 4.77 22 7.81 22H16.191C19.28 22 21 20.26 21 17.16V6.83C21 3.78 19.28 2 16.191 2Z" fill="currentColor"></path>
@@ -136,14 +131,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " aria-current="page" asp-action="Index" asp-controller="Tag">
+                        <a class="nav-link " asp-action="Index" asp-controller="Tag">
                             <i class="icon" data-bs-toggle="tooltip" title="Comment" data-bs-placement="right" aria-label="Comment" data-bs-original-title="Comment">
                                 #
                             </i>
                             <span class="item-name">Tags</span>
                         </a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link " asp-action="Index" asp-controller="User">
                             <i class="icon" data-bs-toggle="tooltip" title="User" data-bs-placement="right" aria-label="User" data-bs-original-title="User">
@@ -157,12 +151,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " asp-action="Index" asp-controller="Slider">
-                            <i class="icon" data-bs-toggle="tooltip" title="User" data-bs-placement="right" aria-label="User" data-bs-original-title="User">
-                                <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M11.997 15.1746C7.684 15.1746 4 15.8546 4 18.5746C4 21.2956 7.661 21.9996 11.997 21.9996C16.31 21.9996 19.994 21.3206 19.994 18.5996C19.994 15.8786 16.334 15.1746 11.997 15.1746Z" fill="currentColor"></path>
-                                    <path opacity="0.4" d="M11.9971 12.5838C14.9351 12.5838 17.2891 10.2288 17.2891 7.29176C17.2891 4.35476 14.9351 1.99976 11.9971 1.99976C9.06008 1.99976 6.70508 4.35476 6.70508 7.29176C6.70508 10.2288 9.06008 12.5838 11.9971 12.5838Z" fill="currentColor"></path>
-                                </svg>
-                            </i>
                             <span class="item-name">Sliders</span>
                         </a>
                     </li>

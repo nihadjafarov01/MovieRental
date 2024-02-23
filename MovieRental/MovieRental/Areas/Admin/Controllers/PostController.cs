@@ -9,6 +9,7 @@ using MovieRental.Business.ViewModels.CommonVMs;
 namespace MovieRental.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Admin")]
+    [Area("Admin")]
     public class PostController : Controller
     {
         IPostService _postService { get; set; }
